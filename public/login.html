@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In – Stayvia | Student Accommodation & Mess Management</title>
+  <meta name="description" content="Sign in to your Stayvia student or property owner account to discover and manage student accommodations near MITS Gwalior.">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Stayvia Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Core Client-side Demonstration Data & Auth Manager (Loaded in head for instant availability) -->
+  <script src="js/sample-data.js"></script>
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+  <!-- ==============================================================================
+       NAVIGATION BAR
+       ============================================================================== -->
+  <nav class="navbar navbar-expand-lg stayvia-navbar">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <span class="brand-icon-wrapper">
+          <i class="bi bi-buildings"></i>
+        </span>
+        Stayvia
+      </a>
+
+      <div class="d-flex align-items-center gap-2">
+        <a href="/" class="btn btn-stayvia-outline btn-sm">
+          <i class="bi bi-arrow-left me-1"></i> Back to Homepage
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==============================================================================
+       LOGIN MAIN CONTENT
+       ============================================================================== -->
+  <main class="container my-auto py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-5">
+        <div class="card border shadow-sm rounded-4 overflow-hidden bg-white">
+          <div class="p-4 p-md-5">
+            <div class="text-center mb-4">
+              <span class="brand-icon-wrapper mx-auto mb-3" style="width: 48px; height: 48px; font-size: 1.4rem;">
+                <i class="bi bi-box-arrow-in-right"></i>
+              </span>
+              <h1 class="h3 fw-bold mb-1">Welcome back</h1>
+              <p class="text-secondary small mb-0">Sign in to your Stayvia student portal or manage your PG listings near MITS Gwalior.</p>
+            </div>
+
+            <!-- Demo Mode Notice -->
+            <div class="alert alert-info py-2 px-3 small rounded-3 mb-4">
+              <div class="d-flex align-items-center gap-2 mb-1">
+                <i class="bi bi-info-circle-fill text-primary"></i>
+                <strong>Prototype Evaluation Mode:</strong>
+              </div>
+              <p class="mb-2 text-dark" style="font-size: 0.8rem;">
+                No real password is required. You may enter any test credentials or click a quick-fill preset below to test immediately.
+              </p>
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-xs btn-outline-primary py-1 px-2" style="font-size: 0.75rem;" id="quickFillStudent">
+                  <i class="bi bi-mortarboard me-1"></i> Fill &amp; Sign In: MITS Student
+                </button>
+                <button type="button" class="btn btn-xs btn-outline-secondary py-1 px-2" style="font-size: 0.75rem;" id="quickFillOwner">
+                  <i class="bi bi-building me-1"></i> Fill &amp; Sign In: Gwalior PG Owner
+                </button>
+              </div>
+            </div>
+
+            <!-- Existing Active Session Alert (Dynamic) -->
+            <div id="existingSessionAlert" class="alert alert-warning py-2 px-3 small rounded-3 mb-3 d-none"></div>
+
+            <!-- Feedback Alert (Dynamic) -->
+            <div id="loginAlert" class="alert d-none small py-2 px-3 mb-3"></div>
+
+            <!-- Login Form -->
+            <form id="loginForm" novalidate>
+              <!-- Role Selection -->
+              <div class="mb-3">
+                <label class="form-label small fw-bold text-secondary text-uppercase" style="font-size: 0.75rem;">Account Type</label>
+                <div class="btn-group w-100" role="group" aria-label="Account Type">
+                  <input type="radio" class="btn-check" name="loginRole" id="roleStudent" value="student" checked>
+                  <label class="btn btn-outline-secondary btn-sm py-2" for="roleStudent">
+                    <i class="bi bi-mortarboard me-1"></i> Student Scholar
+                  </label>
+
+                  <input type="radio" class="btn-check" name="loginRole" id="roleOwner" value="owner">
+                  <label class="btn btn-outline-secondary btn-sm py-2" for="roleOwner">
+                    <i class="bi bi-buildings me-1"></i> PG / Hostel Owner
+                  </label>
+                </div>
+              </div>
+
+              <!-- Email Field -->
+              <div class="mb-3">
+                <label for="loginEmail" class="form-label small fw-bold">College or Personal Email</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light text-muted"><i class="bi bi-envelope"></i></span>
+                  <input type="email" class="form-control" id="loginEmail" placeholder="student@mitsgwalior.in" required>
+                </div>
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+              </div>
+
+              <!-- Password Field -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label for="loginPassword" class="form-label small fw-bold mb-0">Password</label>
+                  <a href="#" class="small text-teal text-decoration-none" style="color: var(--stayvia-teal); font-size: 0.8rem;" onclick="alert('Password reset link is not required for prototype demonstration. Use any sample password.'); return false;">Forgot?</a>
+                </div>
+                <div class="input-group">
+                  <span class="input-group-text bg-light text-muted"><i class="bi bi-lock"></i></span>
+                  <input type="password" class="form-control" id="loginPassword" placeholder="Enter password (any value for demo)" required>
+                  <button class="btn btn-outline-secondary" type="button" id="togglePasswordBtn">
+                    <i class="bi bi-eye" id="togglePasswordIcon"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback">Please provide a password.</div>
+              </div>
+
+              <!-- Remember Me -->
+              <div class="d-flex align-items-center justify-content-between mb-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="rememberMe" checked>
+                  <label class="form-check-label small text-secondary" for="rememberMe">
+                    Keep me signed in
+                  </label>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-stayvia-primary w-100 py-2 fw-semibold" id="submitLoginBtn">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Stayvia
+              </button>
+            </form>
+
+            <div class="mt-4 pt-3 border-top text-center">
+              <p class="small text-secondary mb-0">
+                Don't have an account yet? 
+                <a href="/signup" class="fw-bold text-teal text-decoration-none" style="color: var(--stayvia-teal);">Create free account</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==============================================================================
+       FOOTER
+       ============================================================================== -->
+  <footer class="py-3 bg-white border-top text-center text-secondary small">
+    <div class="container">
+      &copy; 2026 Stayvia Technologies • Focused on MITS Gwalior (Gola Ka Mandir) • Prototype Demonstration
+    </div>
+  </footer>
+
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Login Page Logic -->
+  <script>
+    function checkExistingLoginSession() {
+      const existingUser = window.StayviaAuth ? window.StayviaAuth.getUser() : null;
+      const sessionAlert = document.getElementById('existingSessionAlert');
+      if (!sessionAlert) return;
+
+      if (existingUser && existingUser.name) {
+        sessionAlert.className = 'alert alert-warning py-2 px-3 small rounded-3 mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2';
+        sessionAlert.innerHTML = `
+          <div>
+            <i class="bi bi-person-check-fill me-1 text-primary"></i> Currently signed in as <strong>${escapeHtml(existingUser.name)}</strong> (${escapeHtml(existingUser.role)}).
+          </div>
+          <button type="button" class="btn btn-xs btn-outline-danger py-1 px-2" style="font-size: 0.75rem;" data-action="login-signout" onclick="signOutFromLoginPage()">
+            <i class="bi bi-box-arrow-right me-1"></i> Sign Out
+          </button>
+        `;
+      } else {
+        sessionAlert.className = 'alert d-none';
+        sessionAlert.innerHTML = '';
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action="login-signout"]');
+      if (btn) {
+        e.preventDefault();
+        signOutFromLoginPage();
+      }
+    });
+
+    function signOutFromLoginPage() {
+      if (window.StayviaAuth && window.StayviaAuth.signOut) {
+        window.StayviaAuth.signOut();
+      }
+      try {
+        localStorage.removeItem('stayvia_demo_user');
+        sessionStorage.removeItem('stayvia_demo_user');
+      } catch (e) {}
+      checkExistingLoginSession();
+      const alertBox = document.getElementById('loginAlert');
+      if (alertBox) {
+        alertBox.className = 'alert alert-info py-2 px-3 small rounded-3 mb-3 d-block';
+        alertBox.innerHTML = '<i class="bi bi-check2-circle me-1"></i> You have signed out. You may now log in with a different account.';
+      }
+    }
+
+    function initLogin() {
+      checkExistingLoginSession();
+
+      // Check if URL specifies role=owner
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('role') === 'owner' || window.location.hash.includes('owner')) {
+        const ownerRadio = document.getElementById('roleOwner');
+        if (ownerRadio) ownerRadio.checked = true;
+      }
+
+      const form = document.getElementById('loginForm');
+      const emailInput = document.getElementById('loginEmail');
+      const passInput = document.getElementById('loginPassword');
+      const alertBox = document.getElementById('loginAlert');
+      const submitBtn = document.getElementById('submitLoginBtn');
+      const togglePassBtn = document.getElementById('togglePasswordBtn');
+      const togglePassIcon = document.getElementById('togglePasswordIcon');
+
+      // Quick Fill & Sign In Handlers
+      document.getElementById('quickFillStudent')?.addEventListener('click', () => {
+        emailInput.value = 'aman.sharma@mitsgwalior.in';
+        passInput.value = 'mits12345';
+        document.getElementById('roleStudent').checked = true;
+        clearAlert();
+        form.requestSubmit();
+      });
+
+      document.getElementById('quickFillOwner')?.addEventListener('click', () => {
+        emailInput.value = 'rajesh.owner.gwl@stayvia.example.com';
+        passInput.value = 'gwaliorPG2026';
+        document.getElementById('roleOwner').checked = true;
+        clearAlert();
+        form.requestSubmit();
+      });
+
+      // Toggle Password Visibility
+      togglePassBtn?.addEventListener('click', () => {
+        if (passInput.type === 'password') {
+          passInput.type = 'text';
+          togglePassIcon.className = 'bi bi-eye-slash';
+        } else {
+          passInput.type = 'password';
+          togglePassIcon.className = 'bi bi-eye';
+        }
+      });
+
+      function showAlert(type, message) {
+        alertBox.className = `alert alert-${type} py-2 px-3 small rounded-3 mb-3 d-block`;
+        alertBox.innerHTML = message;
+      }
+
+      function clearAlert() {
+        alertBox.className = 'alert d-none';
+        alertBox.innerHTML = '';
+      }
+
+      // Handle Submission
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearAlert();
+
+        const email = emailInput.value.trim();
+        const password = passInput.value.trim();
+        const role = document.querySelector('input[name="loginRole"]:checked')?.value || 'student';
+
+        // Basic client validation
+        if (!email || !email.includes('@')) {
+          showAlert('danger', '<i class="bi bi-exclamation-triangle-fill me-1"></i> Please enter a valid email address.');
+          emailInput.focus();
+          return;
+        }
+
+        if (!password) {
+          showAlert('danger', '<i class="bi bi-exclamation-triangle-fill me-1"></i> Please enter a password.');
+          passInput.focus();
+          return;
+        }
+
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Signing in...';
+
+        try {
+          // Attempt POST to Express backend
+          const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password, role })
+          });
+
+          let userData;
+          if (res.ok) {
+            const data = await res.json();
+            userData = data.user;
+          } else {
+            // Client fallback if offline
+            userData = {
+              name: email.split('@')[0],
+              email: email,
+              role: role,
+              college: 'MITS Gwalior'
+            };
+          }
+
+          // Save session using StayviaAuth
+          if (window.StayviaAuth) {
+            window.StayviaAuth.setUser(userData);
+          } else {
+            localStorage.setItem('stayvia_demo_user', JSON.stringify(userData));
+            sessionStorage.setItem('stayvia_demo_user', JSON.stringify(userData));
+          }
+
+          showAlert('success', `
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-check-circle-fill fs-5 text-success"></i>
+              <div>
+                <strong>Signed In Successfully!</strong> Welcome back, ${escapeHtml(userData.name)}. Redirecting to Stayvia...
+              </div>
+            </div>
+          `);
+
+          // Redirect according to role
+          const redirectUrl = (role === 'owner') ? '/owner-dashboard' : '/';
+          setTimeout(() => {
+            window.location.href = redirectUrl;
+          }, 900);
+
+        } catch (err) {
+          // Local fallback
+          const userData = {
+            name: email.split('@')[0],
+            email: email,
+            role: role,
+            college: 'MITS Gwalior'
+          };
+          if (window.StayviaAuth) {
+            window.StayviaAuth.setUser(userData);
+          } else {
+            localStorage.setItem('stayvia_demo_user', JSON.stringify(userData));
+            sessionStorage.setItem('stayvia_demo_user', JSON.stringify(userData));
+          }
+          showAlert('success', `<strong>Signed In Successfully (Demo Mode)!</strong> Redirecting...`);
+          const redirectUrl = (role === 'owner') ? '/owner-dashboard' : '/';
+          setTimeout(() => {
+            window.location.href = redirectUrl;
+          }, 900);
+        }
+      });
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>"']/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;' })[m]);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initLogin);
+    } else {
+      initLogin();
+    }
+
+    window.addEventListener('pageshow', () => {
+      checkExistingLoginSession();
+    });
+  </script>
+</body>
+</html>

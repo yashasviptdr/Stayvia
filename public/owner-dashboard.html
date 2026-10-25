@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Owner Dashboard – Stayvia | Manage Hostels & PGs near MITS Gwalior</title>
+  <meta name="description" content="Manage your student hostel, PG, and flat listings near MITS Gwalior. Track room vacancies, edit facilities, and view student walkthrough inquiries.">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Stayvia Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Core Client-side Demonstration Data & Auth Manager (Loaded in head for instant availability) -->
+  <script src="js/sample-data.js"></script>
+
+  <style>
+    /* Owner Dashboard Custom Polish */
+    .dashboard-stat-card {
+      background-color: var(--stayvia-surface);
+      border: 1px solid var(--stayvia-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      height: 100%;
+      box-shadow: var(--shadow-subtle);
+      transition: var(--transition-smooth);
+    }
+    .dashboard-stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card);
+    }
+    .stat-icon-wrapper {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+    .property-thumb-preview {
+      width: 90px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      background-color: #e2e8f0;
+    }
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+    .status-available { background-color: #10b981; }
+    .status-occupied { background-color: #f59e0b; }
+    .live-preview-box {
+      border: 1px dashed var(--stayvia-border);
+      border-radius: var(--radius-md);
+      padding: 0.5rem;
+      text-align: center;
+      background-color: #f8fafc;
+    }
+    .live-preview-box img {
+      max-height: 140px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+    }
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+  <!-- ==============================================================================
+       1. NAVIGATION BAR
+       ============================================================================== -->
+  <nav class="navbar navbar-expand-lg stayvia-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <span class="brand-icon-wrapper">
+          <i class="bi bi-buildings"></i>
+        </span>
+        Stayvia
+        <span class="badge bg-secondary-subtle text-secondary ms-2 small fw-normal" style="font-size: 0.725rem;">Owner Portal</span>
+      </a>
+
+      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarOwnerDash" aria-controls="navbarOwnerDash" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="bi bi-list fs-2 text-dark"></i>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarOwnerDash">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/#accommodations">Student Catalog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active fw-bold text-teal" href="/owner-dashboard" style="color: var(--stayvia-teal);">Owner Dashboard</a>
+          </li>
+        </ul>
+
+        <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+          <div id="ownerNavProfileArea">
+            <!-- Populated dynamically by renderOwnerHeaderAuth() -->
+          </div>
+
+          <button class="btn btn-stayvia-primary btn-sm px-3" onclick="openAddPropertyModal()">
+            <i class="bi bi-plus-lg me-1"></i> Add Property
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==============================================================================
+       2. SUBHEADER & DEMO STORAGE NOTICE
+       ============================================================================== -->
+  <section class="bg-white border-bottom py-3">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div>
+          <h1 class="h4 fw-bold mb-1">Accommodation Owner Dashboard</h1>
+          <p class="text-secondary small mb-0">
+            <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+            Partner listings for <strong>Madhav Institute of Technology and Science (MITS), Gwalior</strong>
+          </p>
+        </div>
+
+        <div class="d-flex gap-2" id="ownerTopActionBtns">
+          <a href="/" class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-eye me-1"></i> View Live Student Homepage
+          </a>
+          <button class="btn btn-sm btn-stayvia-primary" onclick="openAddPropertyModal()">
+            <i class="bi bi-plus-circle me-1"></i> Add New Listing
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prototype Storage Notice -->
+  <div class="container mt-3">
+    <div class="demo-badge-bar py-2 px-3 mb-3">
+      <i class="bi bi-info-circle-fill text-primary fs-5"></i>
+      <div>
+        <strong>Demonstration Mode Storage:</strong> Newly added properties, edits, and availability toggles are safely stored in your browser's <code>localStorage</code>. They persist across page refreshes and appear in the homepage search results!
+      </div>
+    </div>
+
+    <!-- Dynamic Session Role Status Banner -->
+    <div id="ownerSessionBanner" class="d-none"></div>
+
+    <!-- Dynamic Feedback Alert -->
+    <div id="dashboardAlert" class="alert d-none small py-2 px-3 mb-3"></div>
+  </div>
+
+  <!-- Access Restricted Container (Shown when logged-out or student) -->
+  <div class="container my-4 flex-grow-1 d-none" id="accessRestrictedContent"></div>
+
+  <!-- ==============================================================================
+       3. METRICS OVERVIEW CARDS
+       ============================================================================== -->
+  <main class="container my-3 flex-grow-1" id="protectedDashboardContent">
+    <div class="row g-3 mb-4">
+      <!-- Total Listings -->
+      <div class="col-6 col-lg-3">
+        <div class="dashboard-stat-card">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.725rem;">Total Listings</span>
+            <div class="stat-icon-wrapper bg-primary-subtle text-primary">
+              <i class="bi bi-buildings"></i>
+            </div>
+          </div>
+          <div class="fs-2 fw-bold text-dark" id="statTotalProperties">0</div>
+          <div class="text-secondary small" style="font-size: 0.75rem;">Your managed properties</div>
+        </div>
+      </div>
+
+      <!-- Available Listings -->
+      <div class="col-6 col-lg-3">
+        <div class="dashboard-stat-card">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.725rem;">Vacant / Available</span>
+            <div class="stat-icon-wrapper bg-success-subtle text-success">
+              <i class="bi bi-door-open"></i>
+            </div>
+          </div>
+          <div class="fs-2 fw-bold text-success" id="statAvailableProperties">0</div>
+          <div class="text-secondary small" style="font-size: 0.75rem;">Open for student booking</div>
+        </div>
+      </div>
+
+      <!-- Occupied Listings -->
+      <div class="col-6 col-lg-3">
+        <div class="dashboard-stat-card">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.725rem;">Fully Occupied</span>
+            <div class="stat-icon-wrapper bg-warning-subtle text-warning">
+              <i class="bi bi-people-fill"></i>
+            </div>
+          </div>
+          <div class="fs-2 fw-bold text-warning" id="statOccupiedProperties">0</div>
+          <div class="text-secondary small" style="font-size: 0.75rem;">Marked as full</div>
+        </div>
+      </div>
+
+      <!-- Walkthrough Inquiries -->
+      <div class="col-6 col-lg-3">
+        <div class="dashboard-stat-card">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.725rem;">Student Inquiries</span>
+            <div class="stat-icon-wrapper bg-info-subtle text-info">
+              <i class="bi bi-calendar-check"></i>
+            </div>
+          </div>
+          <div class="fs-2 fw-bold text-info" id="statTotalInquiries">0</div>
+          <div class="text-secondary small" style="font-size: 0.75rem;">Walkthrough requests</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================================================
+         4. MY PROPERTIES SECTION
+         ============================================================================== -->
+    <div class="card border shadow-sm rounded-4 bg-white overflow-hidden mb-4">
+      <div class="card-header bg-white py-3 px-4 border-bottom d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div>
+          <h2 class="h5 fw-bold mb-0">My Properties</h2>
+          <span class="text-secondary small" id="myPropertiesCount">Loading listings...</span>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+          <!-- Locality Filter -->
+          <select id="dashLocalityFilter" class="form-select form-select-sm" style="width: auto;">
+            <option value="all">All Localities</option>
+            <option value="Gola Ka Mandir">Gola Ka Mandir</option>
+            <option value="Anand Nagar">Anand Nagar</option>
+            <option value="Thatipur">Thatipur</option>
+            <option value="Morar">Morar</option>
+            <option value="City Center">City Center</option>
+          </select>
+
+          <!-- Type Filter -->
+          <select id="dashTypeFilter" class="form-select form-select-sm" style="width: auto;">
+            <option value="all">All Types</option>
+            <option value="Hostel">Hostels</option>
+            <option value="PG">PGs</option>
+            <option value="Flat">Flats</option>
+            <option value="Mess">Mess Kitchens</option>
+          </select>
+
+          <button class="btn btn-sm btn-stayvia-primary" onclick="openAddPropertyModal()">
+            <i class="bi bi-plus-lg me-1"></i> Add Property
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body p-0">
+        <!-- Properties Table/Card Container -->
+        <div id="ownerPropertiesList">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================================================
+         5. RECENT WALKTHROUGH INQUIRIES SECTION
+         ============================================================================== -->
+    <div class="card border shadow-sm rounded-4 bg-white overflow-hidden mb-4">
+      <div class="card-header bg-white py-3 px-4 border-bottom d-flex align-items-center justify-content-between">
+        <div>
+          <h2 class="h6 fw-bold mb-0"><i class="bi bi-clock-history me-2 text-teal" style="color: var(--stayvia-teal);"></i>Recent Student Walkthrough Inquiries</h2>
+          <small class="text-secondary">Requests submitted by students from the property details page</small>
+        </div>
+        <span class="badge bg-light text-secondary border" id="inquiriesCountBadge">0 Inquiries</span>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0" id="inquiriesTable">
+            <thead class="table-light small text-secondary">
+              <tr>
+                <th class="ps-4">Reference</th>
+                <th>Student</th>
+                <th>Property</th>
+                <th>Visit Date</th>
+                <th>Sharing</th>
+                <th>Phone</th>
+                <th class="pe-4 text-end">Status</th>
+              </tr>
+            </thead>
+            <tbody id="inquiriesTableBody">
+              <!-- Populated dynamically by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==============================================================================
+       6. ADD / EDIT PROPERTY MODAL
+       ============================================================================== -->
+  <div class="modal fade" id="propertyModal" tabindex="-1" aria-labelledby="propertyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content stayvia-modal-content">
+        <div class="modal-header stayvia-modal-header bg-light">
+          <h3 class="modal-title h5 fw-bold" id="propertyModalLabel">
+            <i class="bi bi-building-add text-teal me-2" style="color: var(--stayvia-teal);"></i>
+            <span id="modalActionTitle">Add New Property</span>
+          </h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body stayvia-modal-body p-4">
+          <!-- In-Modal Validation and Feedback Alert -->
+          <div id="propertyModalAlert" class="alert d-none py-2 px-3 small mb-3"></div>
+
+          <form id="propertyForm" novalidate>
+            <input type="hidden" id="editPropertyId" value="">
+
+            <!-- Basic Info: Title & Type -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-8">
+                <label for="formTitle" class="form-label small fw-bold">Property / Listing Title <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="formTitle" placeholder="e.g. Greenwood Scholars PG (Near MITS)" required>
+                <div class="invalid-feedback">Please provide a title for the listing.</div>
+              </div>
+
+              <div class="col-md-4">
+                <label for="formType" class="form-label small fw-bold">Listing Type <span class="text-danger">*</span></label>
+                <select class="form-select" id="formType" required>
+                  <option value="PG" selected>PG (Paying Guest)</option>
+                  <option value="Hostel">Hostel</option>
+                  <option value="Flat">Shared Apartment / Flat</option>
+                  <option value="Mess">Mess Kitchen Only</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Location & Landmark -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-5">
+                <label for="formLocality" class="form-label small fw-bold">Locality in Gwalior <span class="text-danger">*</span></label>
+                <select class="form-select" id="formLocality" required>
+                  <option value="Gola Ka Mandir" selected>Gola Ka Mandir (Near MITS)</option>
+                  <option value="Anand Nagar">Anand Nagar</option>
+                  <option value="Thatipur">Thatipur</option>
+                  <option value="Morar">Morar</option>
+                  <option value="City Center">City Center</option>
+                </select>
+              </div>
+
+              <div class="col-md-7">
+                <label for="formAddress" class="form-label small fw-bold">Full Address / Campus Landmark</label>
+                <input type="text" class="form-control" id="formAddress" placeholder="e.g. Plot 18, Near MITS College Gate, Race Course Road">
+              </div>
+            </div>
+
+            <!-- Pricing: Rent & Deposit -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label for="formRent" class="form-label small fw-bold">Monthly Rent / Charges (₹) <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text">₹</span>
+                  <input type="number" class="form-control" id="formRent" placeholder="5500" min="500" required>
+                </div>
+                <div class="invalid-feedback">Please enter a valid monthly rent.</div>
+              </div>
+
+              <div class="col-md-4">
+                <label for="formDeposit" class="form-label small fw-bold">Security Deposit Note</label>
+                <input type="text" class="form-control" id="formDeposit" placeholder="e.g. 1 Month Security Deposit (Refundable)">
+              </div>
+
+              <div class="col-md-4">
+                <label for="formStatus" class="form-label small fw-bold">Current Availability</label>
+                <select class="form-select" id="formStatus">
+                  <option value="available" selected>Available (Accepting Students)</option>
+                  <option value="occupied">Fully Occupied / No Vacancy</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Occupancy, Gender & Capacity -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label for="formGender" class="form-label small fw-bold">Gender Preference</label>
+                <select class="form-select" id="formGender">
+                  <option value="Boys" selected>Boys Only</option>
+                  <option value="Girls">Girls Only</option>
+                  <option value="Co-ed">Co-ed (Separate Wings)</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label for="formOccupancy" class="form-label small fw-bold">Room Sharing Options</label>
+                <input type="text" class="form-control" id="formOccupancy" placeholder="e.g. Single & Double Sharing">
+              </div>
+
+              <div class="col-md-4">
+                <label for="formRoomsCount" class="form-label small fw-bold">Available Beds / Rooms</label>
+                <input type="number" class="form-control" id="formRoomsCount" placeholder="e.g. 4" min="1" value="2">
+              </div>
+            </div>
+
+            <!-- Facilities Checklist -->
+            <div class="mb-3">
+              <label class="form-label small fw-bold d-block mb-2">Included Amenities &amp; Student Facilities</label>
+              <div class="row g-2" id="facilitiesChecklist">
+                <div class="col-6 col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input fac-check" type="checkbox" value="High-speed Wi-Fi" id="facWifi" checked>
+                    <label class="form-check-label small" for="facWifi"><i class="bi bi-wifi text-primary me-1"></i>High-speed Wi-Fi</label>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input fac-check" type="checkbox" value="Homestyle Food (2 Meals)" id="facFood" checked>
+                    <label class="form-check-label small" for="facFood"><i class="bi bi-egg-fried text-warning me-1"></i>Food / Meals</label>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input fac-check" type="checkbox" value="Power Backup" id="facPower" checked>
+                    <label class="form-check-label small" for="facPower"><i class="bi bi-lightning-charge text-warning me-1"></i>Power Backup</label>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input fac-check" type="checkbox" value="Air Cooler / AC Option" id="facAC">
+                    <label class="form-check-label small" for="facAC"><i class="bi bi-snow text-info me-1"></i>Air Cooler / AC</label>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input fac-check" type="checkbox" value="Attached Bathroom" id="facBath" checked>
+                    <label class="form-check-label small" for="facBath"><i class="bi bi-droplet text-primary me-1"></i>Attached Bath</label>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input fac-check" type="checkbox" value="RO Water" id="facRO" checked>
+                    <label class="form-check-label small" for="facRO"><i class="bi bi-cup-straw text-primary me-1"></i>RO Water</label>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input fac-check" type="checkbox" value="Study Desk" id="facDesk" checked>
+                    <label class="form-check-label small" for="facDesk"><i class="bi bi-book text-secondary me-1"></i>Study Desk</label>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input fac-check" type="checkbox" value="CCTV Security" id="facCCTV" checked>
+                    <label class="form-check-label small" for="facCCTV"><i class="bi bi-shield-check text-success me-1"></i>CCTV Security</label>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4">
+                  <div class="form-check">
+                    <input class="form-check-input fac-check" type="checkbox" value="Biometric Entry" id="facBio">
+                    <label class="form-check-label small" for="facBio"><i class="bi bi-fingerprint text-danger me-1"></i>Biometric Entry</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              <label for="formDescription" class="form-label small fw-bold">Listing Description</label>
+              <textarea class="form-control" id="formDescription" rows="2" placeholder="Describe the room, study environment, and atmosphere for MITS scholars..."></textarea>
+            </div>
+
+            <!-- Rules & Restrictions -->
+            <div class="mb-3">
+              <label for="formRules" class="form-label small fw-bold">House Rules &amp; Guidelines (comma-separated or lines)</label>
+              <input type="text" class="form-control" id="formRules" placeholder="e.g. Standard 10 PM curfew, College ID required, Quiet study hours">
+            </div>
+
+            <!-- Photo URL & Presets -->
+            <div class="mb-3">
+              <label for="formImage" class="form-label small fw-bold">Property Photo URL</label>
+              <div class="input-group mb-2">
+                <span class="input-group-text"><i class="bi bi-image"></i></span>
+                <input type="url" class="form-control" id="formImage" placeholder="https://images.unsplash.com/..." value="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80">
+                <button class="btn btn-outline-secondary" type="button" onclick="previewImage()">Preview</button>
+              </div>
+
+              <!-- Quick Presets -->
+              <div class="d-flex flex-wrap align-items-center gap-1 mb-2">
+                <small class="text-muted me-1" style="font-size: 0.75rem;">Sample Presets:</small>
+                <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 0.725rem;" onclick="setPhotoPreset('https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80')">Room 1 (Modern PG)</button>
+                <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 0.725rem;" onclick="setPhotoPreset('https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=800&q=80')">Room 2 (Twin Hostel)</button>
+                <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 0.725rem;" onclick="setPhotoPreset('https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80')">Room 3 (Women's Suite)</button>
+                <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2" style="font-size: 0.725rem;" onclick="setPhotoPreset('https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80')">Room 4 (Flat)</button>
+              </div>
+
+              <!-- Live Photo Preview Box -->
+              <div class="live-preview-box mt-2" id="livePhotoBox">
+                <img id="livePhotoPreview" src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80" alt="Room preview">
+                <div class="small text-muted mt-1" style="font-size: 0.725rem;">Live Photo Preview</div>
+              </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="formContactName" class="form-label small fw-bold">Contact Person Name</label>
+                <input type="text" class="form-control" id="formContactName" placeholder="e.g. Ramesh Kumar">
+              </div>
+              <div class="col-md-6">
+                <label for="formContactPhone" class="form-label small fw-bold">Contact Phone Number</label>
+                <input type="tel" class="form-control" id="formContactPhone" placeholder="e.g. 9826012345">
+              </div>
+            </div>
+
+            <div class="modal-footer px-0 pb-0 pt-3 border-top d-flex justify-content-between">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-stayvia-primary px-4" id="savePropertyBtn">
+                <i class="bi bi-check-lg me-1"></i> <span id="saveBtnText">Save Listing</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================================================
+       7. DELETE CONFIRMATION MODAL
+       ============================================================================== -->
+  <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content stayvia-modal-content">
+        <div class="modal-header stayvia-modal-header bg-danger-subtle text-danger">
+          <h3 class="modal-title h5 fw-bold" id="deleteConfirmModalLabel">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>Delete Listing
+          </h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body stayvia-modal-body p-4 text-center">
+          <p class="mb-2">Are you sure you want to delete this listing?</p>
+          <div class="p-3 bg-light rounded-3 border mb-3">
+            <h5 class="fw-bold text-dark h6 mb-1" id="deletePropertyTitle">Property Title</h5>
+            <div class="small text-secondary" id="deletePropertyLocality">Gola Ka Mandir, Gwalior</div>
+          </div>
+          <p class="small text-danger mb-0">This will remove the listing from your dashboard and the student search catalog.</p>
+        </div>
+        <div class="modal-footer border-top d-flex justify-content-between">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger px-4" id="confirmDeleteBtn">
+            <i class="bi bi-trash me-1"></i> Yes, Delete Listing
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================================================
+       8. FOOTER
+       ============================================================================== -->
+  <footer class="py-4 bg-white border-top text-center text-secondary small mt-auto">
+    <div class="container">
+      <div class="mb-2">
+        &copy; 2026 Stayvia Technologies • Accommodation Owner Management Console • MITS Gwalior Focus
+      </div>
+      <div>
+        <a href="/" class="text-secondary text-decoration-none me-3">Home</a>
+        <a href="/#accommodations" class="text-secondary text-decoration-none me-3">Student Catalog</a>
+        <a href="/login" class="text-secondary text-decoration-none me-3">Login</a>
+        <a href="/signup" class="text-secondary text-decoration-none">Sign Up</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Owner Dashboard Interactive Controller -->
+  <script>
+    let propertyToDeleteId = null;
+
+    function startOwnerDashboard() {
+      initOwnerDashboard();
+      setupFormListeners();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startOwnerDashboard);
+    } else {
+      startOwnerDashboard();
+    }
+
+    window.addEventListener('pageshow', () => {
+      initOwnerDashboard();
+    });
+
+    function initOwnerDashboard() {
+      const user = window.StayviaAuth ? window.StayviaAuth.getUser() : null;
+      const protectedContent = document.getElementById('protectedDashboardContent');
+      const restrictedContent = document.getElementById('accessRestrictedContent');
+      const topActionBtns = document.getElementById('ownerTopActionBtns');
+
+      renderOwnerHeaderAuth();
+
+      if (user && user.role === 'owner') {
+        if (protectedContent) protectedContent.classList.remove('d-none');
+        if (restrictedContent) restrictedContent.classList.add('d-none');
+        if (topActionBtns) topActionBtns.classList.remove('d-none');
+        renderDashboardStats();
+        renderOwnerProperties();
+        renderInquiries();
+
+        // Check if URL contains #add or ?action=add to automatically open the Add Property form
+        const urlParams = new URLSearchParams(window.location.search);
+        if (window.location.hash === '#add' || urlParams.get('action') === 'add') {
+          setTimeout(() => {
+            openAddPropertyModal();
+          }, 300);
+        }
+      } else {
+        if (protectedContent) protectedContent.classList.add('d-none');
+        if (topActionBtns) topActionBtns.classList.add('d-none');
+        renderRestrictedAccessCard(user);
+      }
+    }
+
+    function renderRestrictedAccessCard(user) {
+      const container = document.getElementById('accessRestrictedContent');
+      if (!container) return;
+      container.classList.remove('d-none');
+
+      if (!user) {
+        // Guest / Logged out
+        container.innerHTML = `
+          <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 text-center py-5">
+              <div class="card p-4 p-md-5 border shadow-sm rounded-4 bg-white">
+                <div class="pillar-icon-box mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.8rem; background-color: #f0fdfa; color: var(--stayvia-teal);">
+                  <i class="bi bi-shield-lock"></i>
+                </div>
+                <h2 class="h4 fw-bold mb-2">Owner Dashboard Access</h2>
+                <p class="text-secondary small mb-4">
+                  The Owner Dashboard is reserved for verified accommodation providers near MITS Gwalior. Sign in with your owner account to manage listings and view student walkthrough inquiries.
+                </p>
+                <div class="d-flex flex-column flex-sm-row justify-content-center gap-2 mb-3">
+                  <a href="/login?role=owner" class="btn btn-stayvia-primary px-4 py-2 fw-semibold">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Sign In as Owner
+                  </a>
+                  <button type="button" class="btn btn-outline-primary px-4 py-2 fw-semibold" data-action="quick-demo-owner">
+                    <i class="bi bi-key-fill me-1"></i> Demo Owner Quick Sign In
+                  </button>
+                </div>
+                <div>
+                  <a href="/" class="btn btn-link btn-sm text-secondary text-decoration-none">
+                    <i class="bi bi-arrow-left me-1"></i> Return to Homepage
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        // Logged in as student
+        container.innerHTML = `
+          <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 text-center py-5">
+              <div class="card p-4 p-md-5 border shadow-sm rounded-4 bg-white">
+                <div class="pillar-icon-box mx-auto mb-3 bg-warning-subtle text-warning" style="width: 64px; height: 64px; font-size: 1.8rem;">
+                  <i class="bi bi-mortarboard-fill"></i>
+                </div>
+                <h2 class="h4 fw-bold mb-2">Student Account Detected</h2>
+                <p class="text-secondary small mb-4">
+                  You are currently signed in as a student scholar (<strong>${escapeHtml(user.name)}</strong>). The Owner Dashboard is restricted to accommodation owners.
+                </p>
+                <div class="d-flex flex-column flex-sm-row justify-content-center gap-2 mb-3">
+                  <button type="button" class="btn btn-stayvia-primary px-4 py-2 fw-semibold" data-action="switch-demo-owner">
+                    <i class="bi bi-arrow-repeat me-1"></i> Switch to Demo Owner Session
+                  </button>
+                  <a href="/" class="btn btn-outline-secondary px-4 py-2 fw-semibold">
+                    <i class="bi bi-search me-1"></i> Return to Student Catalog
+                  </a>
+                </div>
+                <div>
+                  <button type="button" class="btn btn-link btn-sm text-danger text-decoration-none" data-action="owner-logout">
+                    <i class="bi bi-box-arrow-right me-1"></i> Sign Out
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // Global click listener for owner dashboard actions
+    document.addEventListener('click', (e) => {
+      const logoutBtn = e.target.closest('[data-action="owner-logout"]');
+      if (logoutBtn) {
+        e.preventDefault();
+        handleOwnerSignOut();
+      }
+      const quickDemoBtn = e.target.closest('[data-action="quick-demo-owner"]');
+      if (quickDemoBtn) {
+        e.preventDefault();
+        quickLoginDemoOwner();
+      }
+      const switchDemoBtn = e.target.closest('[data-action="switch-demo-owner"]');
+      if (switchDemoBtn) {
+        e.preventDefault();
+        switchDemoToOwner();
+      }
+    });
+
+    // Render navigation profile area and banner based on StayviaAuth
+    function renderOwnerHeaderAuth() {
+      const user = window.StayviaAuth ? window.StayviaAuth.getUser() : null;
+      const profileContainer = document.getElementById('ownerNavProfileArea');
+      const statusBanner = document.getElementById('ownerSessionBanner');
+
+      if (user && user.role === 'owner') {
+        // Signed in as an Owner
+        if (profileContainer) {
+          profileContainer.innerHTML = `
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1 py-1 px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="ownerProfileBtn">
+                <i class="bi bi-person-circle text-teal" style="color: var(--stayvia-teal);"></i>
+                <span id="ownerDisplayName">${escapeHtml(user.name)}</span>
+                <span class="badge bg-primary ms-1 small" style="font-size: 0.65rem;">Owner</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                <li><span class="dropdown-header small">Signed in as <strong>Hostel / PG Owner</strong></span></li>
+                <li><span class="dropdown-item-text small text-muted">${escapeHtml(user.email || '')}</span></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item small" href="/"><i class="bi bi-house me-2"></i>Return to Homepage</a></li>
+                <li><a class="dropdown-item small text-danger" href="#" data-action="owner-logout" onclick="handleOwnerSignOut(); return false;"><i class="bi bi-box-arrow-right me-2"></i>Sign Out</a></li>
+              </ul>
+            </div>
+          `;
+        }
+        if (statusBanner) {
+          statusBanner.className = 'd-none';
+          statusBanner.innerHTML = '';
+        }
+      } else if (user && user.role !== 'owner') {
+        // Signed in as a Student
+        if (profileContainer) {
+          profileContainer.innerHTML = `
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-warning dropdown-toggle d-flex align-items-center gap-1 py-1 px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="ownerProfileBtn">
+                <i class="bi bi-mortarboard-fill text-warning"></i>
+                <span id="ownerDisplayName">${escapeHtml(user.name)}</span>
+                <span class="badge bg-secondary ms-1 small" style="font-size: 0.65rem;">Student</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                <li><span class="dropdown-header small">Active Account: <strong>Student Scholar</strong></span></li>
+                <li><span class="dropdown-item-text small text-muted">${escapeHtml(user.email || '')}</span></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item small text-primary fw-bold" href="#" data-action="switch-demo-owner" onclick="switchDemoToOwner(); return false;"><i class="bi bi-arrow-repeat me-2"></i>Switch to Demo Owner</a></li>
+                <li><a class="dropdown-item small" href="/"><i class="bi bi-house me-2"></i>Return to Homepage</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item small text-danger" href="#" data-action="owner-logout" onclick="handleOwnerSignOut(); return false;"><i class="bi bi-box-arrow-right me-2"></i>Sign Out</a></li>
+              </ul>
+            </div>
+          `;
+        }
+        if (statusBanner) {
+          statusBanner.className = 'd-none';
+          statusBanner.innerHTML = '';
+        }
+      } else {
+        // Guest / Signed Out
+        if (profileContainer) {
+          profileContainer.innerHTML = `
+            <div class="d-flex align-items-center gap-2">
+              <a href="/login" class="btn btn-stayvia-outline btn-sm px-3" id="ownerNavLoginBtn">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Login
+              </a>
+              <a href="/signup" class="btn btn-stayvia-primary btn-sm px-3" id="ownerNavSignupBtn">
+                Sign Up
+              </a>
+            </div>
+          `;
+        }
+        if (statusBanner) {
+          statusBanner.className = 'd-none';
+          statusBanner.innerHTML = '';
+        }
+      }
+    }
+
+    function handleOwnerSignOut() {
+      if (window.StayviaAuth && window.StayviaAuth.signOut) {
+        window.StayviaAuth.signOut();
+      }
+      try {
+        localStorage.removeItem('stayvia_demo_user');
+        sessionStorage.removeItem('stayvia_demo_user');
+      } catch (e) {}
+      window.location.href = '/';
+    }
+
+    function quickLoginDemoOwner() {
+      const ownerUser = {
+        name: 'Rajesh Sharma',
+        email: 'rajesh.owner.gwl@stayvia.example.com',
+        role: 'owner',
+        college: 'MITS Gwalior Partner'
+      };
+      if (window.StayviaAuth) {
+        window.StayviaAuth.setUser(ownerUser);
+      }
+      showDashboardAlert('success', 'Signed in as <strong>Rajesh Sharma</strong> (Demo PG Owner).');
+      initOwnerDashboard();
+    }
+
+    function switchDemoToOwner() {
+      quickLoginDemoOwner();
+    }
+
+    // Render Stats
+    function renderDashboardStats() {
+      const ownerListings = window.StayviaStorage.getOwnerListings();
+      const inquiries = window.StayviaStorage.getInquiries();
+
+      const total = ownerListings.length;
+      const available = ownerListings.filter(item => item.status !== 'occupied').length;
+      const occupied = ownerListings.filter(item => item.status === 'occupied').length;
+
+      document.getElementById('statTotalProperties').textContent = total;
+      document.getElementById('statAvailableProperties').textContent = available;
+      document.getElementById('statOccupiedProperties').textContent = occupied;
+      document.getElementById('statTotalInquiries').textContent = inquiries.length;
+    }
+
+    // Render Properties List
+    function renderOwnerProperties() {
+      const container = document.getElementById('ownerPropertiesList');
+      const countEl = document.getElementById('myPropertiesCount');
+      if (!container) return;
+
+      const localityFilter = document.getElementById('dashLocalityFilter')?.value || 'all';
+      const typeFilter = document.getElementById('dashTypeFilter')?.value || 'all';
+
+      let listings = window.StayviaStorage.getOwnerListings();
+
+      // Filter locally in dashboard
+      if (localityFilter !== 'all') {
+        listings = listings.filter(l => (l.locality || '').toLowerCase() === localityFilter.toLowerCase());
+      }
+      if (typeFilter !== 'all') {
+        listings = listings.filter(l => (l.type || '').toLowerCase() === typeFilter.toLowerCase());
+      }
+
+      countEl.textContent = `Showing ${listings.length} managed listing${listings.length === 1 ? '' : 's'}`;
+
+      if (listings.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-5 px-4">
+            <div class="pillar-icon-box mx-auto mb-3 bg-light text-secondary" style="width: 64px; height: 64px; font-size: 1.8rem;">
+              <i class="bi bi-buildings"></i>
+            </div>
+            <h3 class="h5 fw-bold mb-2">No properties listed yet</h3>
+            <p class="text-secondary small mb-4" style="max-width: 480px; margin: 0 auto;">
+              Add your first student hostel, PG, or flat near MITS Gwalior. Your listing will appear in the student search catalog and be available for walkthrough bookings.
+            </p>
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-stayvia-primary btn-sm px-3" onclick="openAddPropertyModal()">
+                <i class="bi bi-plus-lg me-1"></i> Add Your First Property
+              </button>
+              <button class="btn btn-outline-secondary btn-sm px-3" onclick="loadSampleOwnerListing()">
+                <i class="bi bi-magic me-1"></i> Load Demo Sample PG
+              </button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light small text-secondary">
+              <tr>
+                <th class="ps-4">Listing</th>
+                <th>Type</th>
+                <th>Locality</th>
+                <th>Monthly Rent</th>
+                <th>Status</th>
+                <th class="pe-4 text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${listings.map(item => `
+                <tr>
+                  <td class="ps-4">
+                    <div class="d-flex align-items-center gap-3">
+                      <img src="${escapeHtml(item.image || 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80')}" alt="${escapeHtml(item.name)}" class="property-thumb-preview">
+                      <div>
+                        <h4 class="h6 fw-bold mb-0 text-dark">${escapeHtml(item.name)}</h4>
+                        <span class="small text-muted"><i class="bi bi-person me-1"></i>${escapeHtml(item.gender || 'Boys')} • ${escapeHtml(item.occupancy || 'Double Sharing')}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge bg-dark">${escapeHtml(item.type)}</span>
+                  </td>
+                  <td>
+                    <span class="small fw-semibold text-dark"><i class="bi bi-geo-alt-fill text-danger me-1"></i>${escapeHtml(item.locality || 'Gola Ka Mandir')}</span>
+                  </td>
+                  <td>
+                    <span class="fw-bold text-dark">₹${(Number(item.monthlyRent) || 0).toLocaleString('en-IN')}</span><span class="small text-muted">/mo</span>
+                  </td>
+                  <td>
+                    ${item.status === 'occupied' 
+                      ? `<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1"><span class="status-dot status-occupied"></span>Fully Occupied</span>`
+                      : `<span class="badge bg-success-subtle text-success-emphasis border border-success-subtle px-2 py-1"><span class="status-dot status-available"></span>Available</span>`
+                    }
+                  </td>
+                  <td class="pe-4 text-end">
+                    <div class="btn-group btn-group-sm" role="group">
+                      <!-- Availability Toggle -->
+                      <button class="btn btn-outline-secondary" title="Toggle Availability" onclick="togglePropertyAvailability(${item.id})">
+                        ${item.status === 'occupied' ? '<i class="bi bi-toggle-off text-muted"></i> Mark Vacant' : '<i class="bi bi-toggle-on text-success"></i> Mark Full'}
+                      </button>
+                      
+                      <!-- View Details -->
+                      <a href="/property?id=${item.id}" class="btn btn-outline-secondary" title="View Property Page">
+                        <i class="bi bi-box-arrow-up-right"></i>
+                      </a>
+
+                      <!-- Edit -->
+                      <button class="btn btn-outline-primary" title="Edit Listing" onclick="openEditPropertyModal(${item.id})">
+                        <i class="bi bi-pencil-square"></i>
+                      </button>
+
+                      <!-- Delete -->
+                      <button class="btn btn-outline-danger" title="Delete Listing" onclick="promptDeleteProperty(${item.id})">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    // Render Recent Inquiries
+    function renderInquiries() {
+      const inquiries = window.StayviaStorage.getInquiries();
+      const countBadge = document.getElementById('inquiriesCountBadge');
+      const tableBody = document.getElementById('inquiriesTableBody');
+
+      if (countBadge) countBadge.textContent = `${inquiries.length} Walkthrough Inquiries`;
+
+      if (!tableBody) return;
+
+      if (inquiries.length === 0) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-4 text-muted small">
+              <i class="bi bi-inbox me-1"></i> No student walkthrough requests logged yet. Inquiries submitted on property pages will appear here.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tableBody.innerHTML = inquiries.slice(0, 5).map(inq => `
+        <tr>
+          <td class="ps-4 font-monospace small fw-bold text-teal" style="color: var(--stayvia-teal);">${escapeHtml(inq.referenceNumber || inq.id || 'STAY-GWL')}</td>
+          <td class="small fw-semibold text-dark">${escapeHtml(inq.studentName)}</td>
+          <td class="small text-secondary">${escapeHtml(inq.propertyName || 'Student PG near MITS')}</td>
+          <td class="small text-dark">${escapeHtml(inq.preferredDate || 'To be scheduled')}</td>
+          <td class="small text-secondary">${escapeHtml(inq.occupancyType || 'Double Sharing')}</td>
+          <td class="small text-dark">${escapeHtml(inq.studentPhone || 'N/A')}</td>
+          <td class="pe-4 text-end">
+            <span class="badge bg-info-subtle text-info border">Logged</span>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Toggle Availability
+    function togglePropertyAvailability(id) {
+      const updated = window.StayviaStorage.toggleAvailability(id);
+      if (updated) {
+        showDashboardAlert('success', `Availability for "<strong>${escapeHtml(updated.name)}</strong>" updated to <strong>${updated.status}</strong>.`);
+        renderDashboardStats();
+        renderOwnerProperties();
+      }
+    }
+
+    // Delete Prompt & Confirmation
+    function promptDeleteProperty(id) {
+      const property = window.StayviaStorage.getAccommodationById(id);
+      if (!property) return;
+
+      propertyToDeleteId = id;
+      document.getElementById('deletePropertyTitle').textContent = property.name;
+      document.getElementById('deletePropertyLocality').textContent = `${property.locality}, Gwalior`;
+
+      const modalEl = document.getElementById('deleteConfirmModal');
+      const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+      modal.show();
+    }
+
+    document.getElementById('confirmDeleteBtn')?.addEventListener('click', () => {
+      if (propertyToDeleteId) {
+        window.StayviaStorage.deleteOwnerListing(propertyToDeleteId);
+        showDashboardAlert('info', 'Listing deleted successfully.');
+        propertyToDeleteId = null;
+
+        const modalEl = document.getElementById('deleteConfirmModal');
+        const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+        modal.hide();
+
+        // Clean up any residual modal backdrops
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+        document.body.classList.remove('modal-open');
+        document.body.style.removeProperty('padding-right');
+        document.body.style.removeProperty('overflow');
+
+        renderDashboardStats();
+        renderOwnerProperties();
+      }
+    });
+
+    // In-Modal Alert Utilities
+    function showModalAlert(message) {
+      const alertBox = document.getElementById('propertyModalAlert');
+      if (!alertBox) return;
+      alertBox.className = 'alert alert-danger py-2 px-3 small rounded-3 mb-3 d-block';
+      alertBox.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-1"></i> ${message}`;
+    }
+
+    function clearModalAlert() {
+      const alertBox = document.getElementById('propertyModalAlert');
+      if (alertBox) {
+        alertBox.className = 'alert d-none';
+        alertBox.innerHTML = '';
+      }
+      document.querySelectorAll('#propertyForm .is-invalid').forEach(el => el.classList.remove('is-invalid'));
+    }
+
+    // Open Modal for Adding Property
+    function openAddPropertyModal() {
+      clearModalAlert();
+      const form = document.getElementById('propertyForm');
+      if (form) form.reset();
+
+      document.getElementById('editPropertyId').value = '';
+      document.getElementById('modalActionTitle').textContent = 'Add New Property Listing';
+      document.getElementById('saveBtnText').textContent = 'Publish Listing';
+      setPhotoPreset('https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80');
+
+      // Autofill contact info if user is logged in
+      const user = window.StayviaAuth ? window.StayviaAuth.getUser() : null;
+      if (user && user.name) {
+        document.getElementById('formContactName').value = user.name;
+        if (user.phone) {
+          document.getElementById('formContactPhone').value = user.phone;
+        }
+      } else {
+        document.getElementById('formContactName').value = 'Rajesh Sharma';
+        document.getElementById('formContactPhone').value = '9826012345';
+      }
+
+      const modalEl = document.getElementById('propertyModal');
+      const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+      modal.show();
+    }
+
+    // Open Modal for Editing Property
+    function openEditPropertyModal(id) {
+      clearModalAlert();
+      const property = window.StayviaStorage.getAccommodationById(id);
+      if (!property) return;
+
+      document.getElementById('editPropertyId').value = property.id;
+      document.getElementById('modalActionTitle').textContent = `Edit Listing: ${property.name}`;
+      document.getElementById('saveBtnText').textContent = 'Update Listing';
+
+      document.getElementById('formTitle').value = property.name || '';
+      document.getElementById('formType').value = property.type || 'PG';
+      document.getElementById('formLocality').value = property.locality || 'Gola Ka Mandir';
+      document.getElementById('formAddress').value = property.address || '';
+      document.getElementById('formRent').value = property.monthlyRent || '';
+      document.getElementById('formDeposit').value = property.depositNote || '';
+      document.getElementById('formStatus').value = property.status || 'available';
+      document.getElementById('formGender').value = property.gender || 'Boys';
+      document.getElementById('formOccupancy').value = property.occupancy || 'Double Sharing';
+      document.getElementById('formRoomsCount').value = property.availableRooms || 2;
+      document.getElementById('formDescription').value = property.description || '';
+      document.getElementById('formRules').value = (property.rules || []).join(', ');
+      document.getElementById('formImage').value = property.image || '';
+      document.getElementById('formContactName').value = property.ownerName || 'Rajesh Sharma';
+      document.getElementById('formContactPhone').value = property.contactPhone || '9826012345';
+
+      // Check facility boxes
+      const currentFacs = property.facilities || [];
+      document.querySelectorAll('.fac-check').forEach(cb => {
+        cb.checked = currentFacs.some(f => f.toLowerCase().includes(cb.value.toLowerCase().split(' ')[0]));
+      });
+
+      previewImage();
+
+      const modalEl = document.getElementById('propertyModal');
+      const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+      modal.show();
+    }
+
+    // Photo Presets and Live Preview
+    function setPhotoPreset(url) {
+      const input = document.getElementById('formImage');
+      if (input) input.value = url;
+      previewImage();
+    }
+
+    function previewImage() {
+      const url = document.getElementById('formImage')?.value.trim();
+      const img = document.getElementById('livePhotoPreview');
+      if (img && url) {
+        img.src = url;
+      }
+    }
+
+    // Handle Add/Edit Form Submit
+    function setupFormListeners() {
+      const form = document.getElementById('propertyForm');
+      if (!form) return;
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        clearModalAlert();
+
+        const titleInput = document.getElementById('formTitle');
+        const rentInput = document.getElementById('formRent');
+        const roomsInput = document.getElementById('formRoomsCount');
+
+        const title = titleInput.value.trim();
+        const type = document.getElementById('formType').value;
+        const locality = document.getElementById('formLocality').value;
+        const address = document.getElementById('formAddress').value.trim();
+        const rent = parseInt(rentInput.value, 10);
+        const deposit = document.getElementById('formDeposit').value.trim();
+        const status = document.getElementById('formStatus').value;
+        const gender = document.getElementById('formGender').value;
+        const occupancy = document.getElementById('formOccupancy').value.trim();
+        const roomsCount = parseInt(roomsInput.value, 10);
+        const description = document.getElementById('formDescription').value.trim();
+        const rulesStr = document.getElementById('formRules').value.trim();
+        const image = document.getElementById('formImage').value.trim() || 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80';
+        const contactName = document.getElementById('formContactName').value.trim();
+        const contactPhone = document.getElementById('formContactPhone').value.trim();
+        const editId = document.getElementById('editPropertyId').value.trim();
+
+        // 1. Validate Title
+        if (!title) {
+          showModalAlert('Please provide a listing title (e.g. Greenwood Scholars PG).');
+          titleInput.classList.add('is-invalid');
+          titleInput.focus();
+          return;
+        }
+
+        // 2. Validate Monthly Rent
+        if (isNaN(rent) || rent < 500) {
+          showModalAlert('Please enter a valid monthly rent amount (at least ₹500).');
+          rentInput.classList.add('is-invalid');
+          rentInput.focus();
+          return;
+        }
+
+        // 3. Validate Rooms / Beds
+        if (isNaN(roomsCount) || roomsCount < 1) {
+          showModalAlert('Please enter the number of available rooms or beds (at least 1).');
+          roomsInput.classList.add('is-invalid');
+          roomsInput.focus();
+          return;
+        }
+
+        // Collect checked facilities
+        const facilities = [];
+        document.querySelectorAll('.fac-check:checked').forEach(cb => {
+          facilities.push(cb.value);
+        });
+
+        // Parse rules
+        const rules = rulesStr 
+          ? rulesStr.split(',').map(r => r.trim()).filter(r => r)
+          : ["Standard student curfew applies", "College ID required at check-in", "Quiet study hours during exams"];
+
+        const payload = {
+          name: title,
+          type,
+          locality,
+          localityNote: `Located in ${locality} (Near MITS Gwalior)`,
+          address: address || `${locality}, Gwalior, MP`,
+          monthlyRent: rent,
+          deposit: rent,
+          depositNote: deposit || '1 Month Security Deposit (Refundable)',
+          status,
+          gender,
+          occupancy: occupancy || 'Double Sharing',
+          availableRooms: roomsCount,
+          facilities: facilities.length > 0 ? facilities : ["High-speed Wi-Fi", "Power Backup", "RO Water"],
+          description: description || `Modern student ${type} accommodation located in ${locality}, convenient for scholars attending MITS Gwalior.`,
+          rules,
+          image,
+          alt: `${title} room near MITS Gwalior`,
+          ownerName: contactName || 'Rajesh Sharma',
+          contactPhone: contactPhone || '9826012345'
+        };
+
+        const saveBtn = document.getElementById('savePropertyBtn');
+        const originalBtnHtml = saveBtn.innerHTML;
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving Listing...';
+
+        try {
+          if (editId) {
+            // Update existing listing
+            window.StayviaStorage.updateOwnerListing(editId, payload);
+            showDashboardAlert('success', `Listing "<strong>${escapeHtml(title)}</strong>" updated successfully.`);
+          } else {
+            // Add new listing
+            window.StayviaStorage.addOwnerListing(payload);
+            showDashboardAlert('success', `New listing "<strong>${escapeHtml(title)}</strong>" published! It is now visible on the homepage.`);
+          }
+
+          // Hide Modal cleanly
+          const modalEl = document.getElementById('propertyModal');
+          const modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+          modalInstance.hide();
+
+          // Clean up any residual backdrops
+          document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+          document.body.classList.remove('modal-open');
+          document.body.style.removeProperty('padding-right');
+          document.body.style.removeProperty('overflow');
+
+          // Reset form state
+          form.reset();
+          document.getElementById('editPropertyId').value = '';
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = originalBtnHtml;
+
+          // Refresh View
+          renderDashboardStats();
+          renderOwnerProperties();
+
+          // Scroll smoothly to success alert
+          const alertBox = document.getElementById('dashboardAlert');
+          if (alertBox) {
+            alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+
+        } catch (err) {
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = originalBtnHtml;
+          showModalAlert(err.message || 'Error saving property listing.');
+        }
+      });
+
+      // Filter changes
+      document.getElementById('dashLocalityFilter')?.addEventListener('change', renderOwnerProperties);
+      document.getElementById('dashTypeFilter')?.addEventListener('change', renderOwnerProperties);
+    }
+
+    // Quick demo action to pre-populate 1 sample PG if empty
+    function loadSampleOwnerListing() {
+      try {
+        window.StayviaStorage.addOwnerListing({
+          name: "Shri Ram Student Residency & PG (Demo)",
+          type: "PG",
+          locality: "Gola Ka Mandir",
+          localityNote: "Located in Gola Ka Mandir (200m from MITS Gate)",
+          address: "Race Course Road, Gola Ka Mandir, Gwalior",
+          monthlyRent: 5800,
+          deposit: 5800,
+          depositNote: "1 Month Security Deposit (Demo)",
+          status: "available",
+          gender: "Boys",
+          occupancy: "Single & Double Sharing",
+          availableRooms: 3,
+          facilities: ["High-speed Wi-Fi", "Homestyle Food (2 Meals)", "Air Cooler / AC Option", "Power Backup", "Attached Bathroom", "Study Desk", "CCTV Security"],
+          description: "Comfortable and study-friendly boys PG located right near MITS Gwalior in Gola Ka Mandir. Complete meal plan and quiet study environment.",
+          rules: ["Standard 10 PM gate timing", "MITS ID verification at check-in", "Quiet study hours after 10 PM"],
+          image: "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=800&q=80",
+          alt: "Shri Ram Student Residency Gola Ka Mandir",
+          ownerName: "Rajesh Sharma",
+          contactPhone: "9826012345"
+        });
+
+        showDashboardAlert('success', 'Sample demo property loaded! It is now visible on your dashboard and the homepage.');
+        renderDashboardStats();
+        renderOwnerProperties();
+      } catch (err) {
+        if (err.code === 'DUPLICATE_LISTING') {
+          showDashboardAlert('warning', 'The demo sample PG is already loaded on your dashboard.');
+        } else {
+          showDashboardAlert('danger', err.message);
+        }
+      }
+    }
+
+    function showDashboardAlert(type, message) {
+      const alertBox = document.getElementById('dashboardAlert');
+      if (!alertBox) return;
+      alertBox.className = `alert alert-${type} py-2 px-3 small rounded-3 mb-3 d-block`;
+      alertBox.innerHTML = message;
+      setTimeout(() => {
+        alertBox.className = 'alert d-none';
+      }, 6000);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;' })[m]);
+    }
+  </script>
+</body>
+</html>

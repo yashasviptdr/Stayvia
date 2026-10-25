@@ -1,0 +1,695 @@
+/**
+ * ==============================================================================
+ * Stayvia - Stylesheet
+ * Clean, Chic, Modern Startup Aesthetic
+ * ==============================================================================
+ */
+
+:root {
+  /* Brand Color Tokens */
+  --stayvia-navy-dark: #0a1120;
+  --stayvia-navy: #0f172a;
+  --stayvia-navy-soft: #1e293b;
+  --stayvia-teal-dark: #0f766e;
+  --stayvia-teal: #0d9488;
+  --stayvia-teal-light: #ccfbf1;
+  --stayvia-teal-subtle: #f0fdfa;
+  --stayvia-accent: #14b8a6;
+  --stayvia-amber: #d97706;
+  --stayvia-amber-light: #fef3c7;
+
+  /* Neutrals & Surfaces */
+  --stayvia-bg: #f8fafc;
+  --stayvia-surface: #ffffff;
+  --stayvia-surface-muted: #f1f5f9;
+  --stayvia-border: #e2e8f0;
+  --stayvia-border-focus: #94a3b8;
+
+  /* Typography */
+  --stayvia-text-main: #0f172a;
+  --stayvia-text-secondary: #475569;
+  --stayvia-text-muted: #64748b;
+  --stayvia-text-light: #94a3b8;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* Radius & Shadows */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --shadow-subtle: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.05);
+  --shadow-card: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --shadow-hover: 0 12px 24px -4px rgba(15, 23, 42, 0.12), 0 4px 8px -2px rgba(15, 23, 42, 0.06);
+  --shadow-navbar: 0 1px 3px rgba(15, 23, 42, 0.08);
+
+  /* Transitions */
+  --transition-smooth: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base & Typography Reset */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--stayvia-bg);
+  color: var(--stayvia-text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--stayvia-navy-dark);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-smooth);
+}
+
+/* ------------------------------------------------------------------------------
+ * Navigation Bar
+ * ------------------------------------------------------------------------------ */
+.stayvia-navbar {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--stayvia-border);
+  box-shadow: var(--shadow-navbar);
+  padding: 0.85rem 0;
+  transition: var(--transition-smooth);
+}
+
+.stayvia-navbar .navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--stayvia-navy-dark);
+  letter-spacing: -0.03em;
+}
+
+.brand-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--stayvia-teal), var(--stayvia-teal-dark));
+  color: #ffffff;
+  border-radius: var(--radius-sm);
+  font-size: 1.15rem;
+}
+
+.stayvia-navbar .nav-link {
+  color: var(--stayvia-text-secondary);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.9rem !important;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-smooth);
+}
+
+.stayvia-navbar .nav-link:hover,
+.stayvia-navbar .nav-link.active {
+  color: var(--stayvia-teal-dark);
+  background-color: var(--stayvia-teal-subtle);
+}
+
+/* ------------------------------------------------------------------------------
+ * Buttons
+ * ------------------------------------------------------------------------------ */
+.btn-stayvia-primary {
+  background-color: var(--stayvia-teal);
+  color: #ffffff !important;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  padding: 0.55rem 1.25rem;
+  border: 1px solid transparent;
+  transition: var(--transition-smooth);
+}
+
+.btn-stayvia-primary:hover {
+  background-color: var(--stayvia-teal-dark);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+}
+
+.btn-stayvia-outline {
+  background-color: transparent;
+  color: var(--stayvia-navy);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  padding: 0.55rem 1.25rem;
+  border: 1px solid var(--stayvia-border);
+  transition: var(--transition-smooth);
+}
+
+.btn-stayvia-outline:hover {
+  background-color: var(--stayvia-surface-muted);
+  border-color: var(--stayvia-border-focus);
+  color: var(--stayvia-navy-dark);
+}
+
+.btn-stayvia-outline-teal {
+  background-color: transparent;
+  color: var(--stayvia-teal-dark);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  padding: 0.55rem 1.25rem;
+  border: 1px solid var(--stayvia-teal);
+  transition: var(--transition-smooth);
+}
+
+.btn-stayvia-outline-teal:hover {
+  background-color: var(--stayvia-teal-subtle);
+  color: var(--stayvia-teal-dark);
+}
+
+/* ------------------------------------------------------------------------------
+ * Hero Section
+ * ------------------------------------------------------------------------------ */
+.stayvia-hero {
+  position: relative;
+  background-color: #0b1523;
+  background-image: 
+    radial-gradient(circle at 15% 25%, rgba(13, 148, 136, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(30, 41, 59, 0.3) 0%, transparent 50%);
+  color: #ffffff;
+  padding: 5rem 0 4.5rem 0;
+  border-bottom: 1px solid #1e293b;
+}
+
+.hero-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #5eead4;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.825rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.25rem;
+}
+
+.stayvia-hero h1 {
+  color: #ffffff;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+}
+
+.stayvia-hero .hero-subtitle {
+  color: #94a3b8;
+  font-size: 1.15rem;
+  max-width: 620px;
+  margin-bottom: 2.25rem;
+  line-height: 1.6;
+}
+
+/* Hero Search Component */
+.hero-search-box {
+  background-color: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
+  color: var(--stayvia-text-main);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-search-box .form-label {
+  font-size: 0.775rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--stayvia-text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.35rem;
+}
+
+.hero-search-box .form-control,
+.hero-search-box .form-select {
+  border: 1px solid var(--stayvia-border);
+  border-radius: var(--radius-md);
+  font-size: 0.925rem;
+  padding: 0.65rem 0.85rem;
+  color: var(--stayvia-navy-dark);
+  font-weight: 500;
+}
+
+.hero-search-box .form-control:focus,
+.hero-search-box .form-select:focus {
+  border-color: var(--stayvia-teal);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+  outline: none;
+}
+
+.search-hint {
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  margin-top: 0.85rem;
+}
+
+/* ------------------------------------------------------------------------------
+ * Trust & Value Pillars
+ * ------------------------------------------------------------------------------ */
+.trust-pillar-card {
+  background-color: var(--stayvia-surface);
+  border: 1px solid var(--stayvia-border);
+  border-radius: var(--radius-lg);
+  padding: 1.85rem 1.5rem;
+  height: 100%;
+  transition: var(--transition-smooth);
+}
+
+.trust-pillar-card:hover {
+  transform: translateY(-3px);
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-card);
+}
+
+.pillar-icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: var(--stayvia-teal-subtle);
+  color: var(--stayvia-teal-dark);
+  border-radius: var(--radius-md);
+  font-size: 1.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.trust-pillar-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+  font-weight: 700;
+}
+
+.trust-pillar-card p {
+  color: var(--stayvia-text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 0;
+  line-height: 1.55;
+}
+
+/* ------------------------------------------------------------------------------
+ * Demonstration Notice Banner
+ * ------------------------------------------------------------------------------ */
+.demo-badge-bar {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  margin-bottom: 2rem;
+}
+
+/* ------------------------------------------------------------------------------
+ * Accommodation Cards
+ * ------------------------------------------------------------------------------ */
+.accommodation-card {
+  background-color: var(--stayvia-surface);
+  border: 1px solid var(--stayvia-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition-smooth);
+  box-shadow: var(--shadow-subtle);
+}
+
+.accommodation-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: #cbd5e1;
+}
+
+.card-image-wrap {
+  position: relative;
+  height: 210px;
+  overflow: hidden;
+  background-color: #e2e8f0;
+}
+
+.card-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.accommodation-card:hover .card-image-wrap img {
+  transform: scale(1.04);
+}
+
+.card-type-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+}
+
+.card-gender-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  color: var(--stayvia-navy);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-body-content {
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-location-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--stayvia-text-muted);
+  font-size: 0.825rem;
+  margin-bottom: 0.5rem;
+}
+
+.accommodation-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--stayvia-navy-dark);
+  margin-bottom: 0.35rem;
+  line-height: 1.35;
+}
+
+.accommodation-distance {
+  font-size: 0.8rem;
+  color: var(--stayvia-teal-dark);
+  font-weight: 600;
+  margin-bottom: 0.9rem;
+}
+
+.facilities-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.15rem;
+}
+
+.facility-pill {
+  background-color: var(--stayvia-surface-muted);
+  color: var(--stayvia-text-secondary);
+  font-size: 0.725rem;
+  font-weight: 500;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--stayvia-border);
+}
+
+.card-pricing-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--stayvia-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pricing-amount {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--stayvia-navy-dark);
+}
+
+.pricing-unit {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--stayvia-text-muted);
+}
+
+.deposit-subtext {
+  font-size: 0.725rem;
+  color: var(--stayvia-text-muted);
+}
+
+/* ------------------------------------------------------------------------------
+ * How It Works Section
+ * ------------------------------------------------------------------------------ */
+.step-card {
+  position: relative;
+  background-color: var(--stayvia-surface);
+  border: 1px solid var(--stayvia-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  height: 100%;
+  transition: var(--transition-smooth);
+}
+
+.step-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
+}
+
+.step-number-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background-color: var(--stayvia-teal);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.15rem;
+  border-radius: 50%;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.2);
+}
+
+.step-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.step-card p {
+  color: var(--stayvia-text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+/* ------------------------------------------------------------------------------
+ * Mess Services Section
+ * ------------------------------------------------------------------------------ */
+.mess-card {
+  background-color: var(--stayvia-surface);
+  border: 1px solid var(--stayvia-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition-smooth);
+}
+
+.mess-card:hover {
+  transform: translateY(-3px);
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-card);
+}
+
+.mess-diet-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.775rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background-color: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  margin-bottom: 0.75rem;
+}
+
+.mess-highlights-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 1rem 0;
+  font-size: 0.85rem;
+  color: var(--stayvia-text-secondary);
+}
+
+.mess-highlights-list li {
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.mess-highlights-list li i {
+  color: var(--stayvia-teal);
+}
+
+/* ------------------------------------------------------------------------------
+ * Owner Call to Action
+ * ------------------------------------------------------------------------------ */
+.owner-cta-banner {
+  background: linear-gradient(135deg, var(--stayvia-navy-dark) 0%, #172554 100%);
+  border-radius: var(--radius-xl);
+  padding: 3.5rem 2.5rem;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-hover);
+}
+
+.owner-cta-banner h2 {
+  color: #ffffff;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.owner-cta-banner p {
+  color: #cbd5e1;
+  font-size: 1.05rem;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.owner-benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: #e2e8f0;
+  font-size: 0.925rem;
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+}
+
+.owner-benefit-item i {
+  color: #2dd4bf;
+}
+
+/* ------------------------------------------------------------------------------
+ * Footer
+ * ------------------------------------------------------------------------------ */
+.stayvia-footer {
+  background-color: var(--stayvia-navy-dark);
+  color: #94a3b8;
+  padding: 4.5rem 0 2rem 0;
+  border-top: 1px solid #1e293b;
+  font-size: 0.9rem;
+}
+
+.stayvia-footer .footer-brand-title {
+  color: #ffffff;
+  font-size: 1.35rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.stayvia-footer .footer-heading {
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.25rem;
+}
+
+.stayvia-footer .footer-links {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.stayvia-footer .footer-links li {
+  margin-bottom: 0.65rem;
+}
+
+.stayvia-footer .footer-links a {
+  color: #94a3b8;
+  transition: var(--transition-smooth);
+}
+
+.stayvia-footer .footer-links a:hover {
+  color: #5eead4;
+  padding-left: 3px;
+}
+
+.footer-bottom-bar {
+  margin-top: 3.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid #1e293b;
+  font-size: 0.825rem;
+  color: #64748b;
+}
+
+/* ------------------------------------------------------------------------------
+ * Modals & Interactive Alerts
+ * ------------------------------------------------------------------------------ */
+.stayvia-modal-content {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--stayvia-border);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.stayvia-modal-header {
+  border-bottom: 1px solid var(--stayvia-border);
+  padding: 1.25rem 1.5rem;
+}
+
+.stayvia-modal-body {
+  padding: 1.5rem;
+}
+
+.filter-badge-active {
+  background-color: var(--stayvia-teal) !important;
+  color: #ffffff !important;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .stayvia-hero {
+    padding: 3rem 0;
+  }
+  .hero-search-box {
+    padding: 1.15rem;
+  }
+  .owner-cta-banner {
+    padding: 2.25rem 1.5rem;
+  }
+}
