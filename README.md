@@ -89,11 +89,6 @@ cp .env.example .env       # On macOS / Linux
 
 ### 6. View in Your Browser
 - **Homepage (with MITS Gwalior Filters)**: Open [http://localhost:3000](http://localhost:3000)
-- **Dedicated Login Page**: Open [http://localhost:3000/login](http://localhost:3000/login)
-- **Dedicated Signup Page**: Open [http://localhost:3000/signup](http://localhost:3000/signup)
-- **Property Details & Booking Flow**: Open [http://localhost:3000/property?id=1](http://localhost:3000/property?id=1)
-- **Health Check API**: Open [http://localhost:3000/api/health](http://localhost:3000/api/health)
-- **Accommodations API**: Open [http://localhost:3000/api/accommodations](http://localhost:3000/api/accommodations)
 
 ### 7. Run Automated Tests
 ```bash
