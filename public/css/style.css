@@ -1,68 +1,107 @@
 /**
  * ==============================================================================
  * Stayvia - Stylesheet
- * Clean, Chic, Modern Startup Aesthetic
+ * Clean, Minimal, Professional Red & White Design
+ * - Pure White (#FFFFFF) Background throughout
+ * - Primary Accent: Deep Terracotta Red (#BA4328)
+ * - Headings & Body: Dark Charcoal / Near-Black (#111827 / #27272A)
+ * - Borders & Dividers: Very Light Neutral Grey (#E5E7EB)
+ * - Typography: Elegant Serif Headings & Clean Sans-Serif Body
+ * - Strictly ZERO Green, Blue, or Multi-Colour Shades
  * ==============================================================================
  */
 
 :root {
-  /* Brand Color Tokens */
-  --stayvia-navy-dark: #0a1120;
-  --stayvia-navy: #0f172a;
-  --stayvia-navy-soft: #1e293b;
-  --stayvia-teal-dark: #0f766e;
-  --stayvia-teal: #0d9488;
-  --stayvia-teal-light: #ccfbf1;
-  --stayvia-teal-subtle: #f0fdfa;
-  --stayvia-accent: #14b8a6;
-  --stayvia-amber: #d97706;
-  --stayvia-amber-light: #fef3c7;
+  /* ----------------------------------------------------------------------------
+   * 1. Red & White Brand Color Tokens
+   * ---------------------------------------------------------------------------- */
+  --stayvia-red: #ba4328;
+  --stayvia-red-dark: #98321a;
+  --stayvia-red-light: #cf5338;
+  --stayvia-red-subtle: #fdf3f0;
+  --stayvia-red-border: #f4cec5;
 
-  /* Neutrals & Surfaces */
-  --stayvia-bg: #f8fafc;
+  /* Backward Compatibility Aliases */
+  --stayvia-terracotta: var(--stayvia-red);
+  --stayvia-terracotta-dark: var(--stayvia-red-dark);
+  --stayvia-terracotta-subtle: var(--stayvia-red-subtle);
+  --stayvia-teal: var(--stayvia-red);
+  --stayvia-teal-dark: var(--stayvia-red-dark);
+  --stayvia-teal-subtle: var(--stayvia-red-subtle);
+  --stayvia-accent: var(--stayvia-red);
+
+  /* ----------------------------------------------------------------------------
+   * 2. Neutrals & Surfaces - PURE WHITE GUARANTEE (#FFFFFF)
+   * ---------------------------------------------------------------------------- */
+  --stayvia-bg: #ffffff;
   --stayvia-surface: #ffffff;
-  --stayvia-surface-muted: #f1f5f9;
-  --stayvia-border: #e2e8f0;
-  --stayvia-border-focus: #94a3b8;
+  --stayvia-surface-subtle: #fafafa;
+  --stayvia-border: #e5e7eb;
+  --stayvia-border-dark: #d1d5db;
+  --stayvia-border-focus: var(--stayvia-red);
 
-  /* Typography */
-  --stayvia-text-main: #0f172a;
-  --stayvia-text-secondary: #475569;
-  --stayvia-text-muted: #64748b;
-  --stayvia-text-light: #94a3b8;
+  /* ----------------------------------------------------------------------------
+   * 3. High-Contrast Charcoal & Neutral Typography Tokens
+   * ---------------------------------------------------------------------------- */
+  --stayvia-text-heading: #111827;       /* Dark charcoal / near-black for major headings */
+  --stayvia-text-main: #27272a;          /* Clean, readable dark charcoal for body */
+  --stayvia-text-secondary: #4b5563;     /* Balanced medium charcoal for descriptions */
+  --stayvia-text-muted: #6b7280;         /* Muted grey for metadata, hints */
+  --stayvia-text-light: #9ca3af;         /* Light grey */
+
+  --font-serif: 'Playfair Display', 'Lora', Georgia, 'Times New Roman', serif;
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
-  /* Radius & Shadows */
+  /* ----------------------------------------------------------------------------
+   * 4. Radius & Minimal Soft Shadows
+   * ---------------------------------------------------------------------------- */
   --radius-sm: 0.375rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
-  --shadow-subtle: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.05);
-  --shadow-card: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
-  --shadow-hover: 0 12px 24px -4px rgba(15, 23, 42, 0.12), 0 4px 8px -2px rgba(15, 23, 42, 0.06);
-  --shadow-navbar: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
 
-  /* Transitions */
-  --transition-smooth: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+  --shadow-hover: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+  --shadow-navbar: 0 1px 3px rgba(0, 0, 0, 0.04);
+
+  --transition-smooth: all 0.18s ease-in-out;
 }
 
-/* Base & Typography Reset */
+/* ------------------------------------------------------------------------------
+ * Base Reset & Pure White Enforcement
+ * ------------------------------------------------------------------------------ */
 * {
   box-sizing: border-box;
 }
 
-body {
-  font-family: var(--font-sans);
-  background-color: var(--stayvia-bg);
+html, body {
+  background-color: #ffffff !important;
   color: var(--stayvia-text-main);
+  font-family: var(--font-sans);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, h6 {
+/* Strictly enforce pure white background across all containers */
+.bg-light,
+section.bg-light,
+main.bg-light,
+header.bg-light,
+div.bg-light,
+article.bg-light,
+aside.bg-light,
+footer.bg-light {
+  background-color: #ffffff !important;
+}
+
+/* Elegant Serif Headings in Dark Charcoal / Near-Black */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: var(--font-serif);
   font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--stayvia-navy-dark);
+  letter-spacing: -0.015em;
+  color: var(--stayvia-text-heading);
 }
 
 a {
@@ -72,12 +111,101 @@ a {
 }
 
 /* ------------------------------------------------------------------------------
- * Navigation Bar
+ * Red & White Theme Utility Classes
+ * ------------------------------------------------------------------------------ */
+.text-red { color: var(--stayvia-red) !important; }
+.bg-red { background-color: var(--stayvia-red) !important; color: #ffffff !important; }
+.border-red { border-color: var(--stayvia-red) !important; }
+
+/* Neutralize legacy multi-colour & green utility classes to red and clean neutrals */
+.text-forest,
+.text-olive,
+.text-teal,
+.text-primary,
+.text-info,
+.text-success,
+.text-danger {
+  color: var(--stayvia-red) !important;
+}
+
+.text-warning {
+  color: var(--stayvia-text-heading) !important;
+}
+
+.bg-forest,
+.bg-olive,
+.bg-teal,
+.bg-primary,
+.bg-info,
+.bg-success,
+.bg-danger {
+  background-color: var(--stayvia-red) !important;
+  color: #ffffff !important;
+}
+
+.border-teal,
+.border-primary,
+.border-info,
+.border-success,
+.border-warning {
+  border-color: var(--stayvia-border) !important;
+}
+
+.border-danger {
+  border-color: var(--stayvia-red-border) !important;
+}
+
+.bg-primary-subtle,
+.bg-success-subtle,
+.bg-info-subtle,
+.bg-danger-subtle {
+  background-color: var(--stayvia-red-subtle) !important;
+  color: var(--stayvia-red) !important;
+  border-color: var(--stayvia-red-border) !important;
+}
+
+.bg-warning-subtle {
+  background-color: #ffffff !important;
+  color: var(--stayvia-text-heading) !important;
+  border-color: var(--stayvia-border) !important;
+}
+
+.text-success-emphasis,
+.text-warning-emphasis,
+.text-primary-emphasis,
+.text-info-emphasis {
+  color: var(--stayvia-text-heading) !important;
+}
+
+.alert-info,
+.alert-success,
+.alert-warning,
+.alert-primary {
+  background-color: #ffffff !important;
+  border: 1px solid var(--stayvia-border) !important;
+  border-left: 4px solid var(--stayvia-red) !important;
+  color: var(--stayvia-text-main) !important;
+}
+
+.alert-info i,
+.alert-success i,
+.alert-warning i,
+.alert-primary i {
+  color: var(--stayvia-red) !important;
+}
+
+.badge.bg-secondary,
+.badge.bg-secondary-subtle {
+  background-color: #ffffff !important;
+  color: var(--stayvia-text-secondary) !important;
+  border: 1px solid var(--stayvia-border) !important;
+}
+
+/* ------------------------------------------------------------------------------
+ * Navigation Bar (Pure White, Dark Charcoal Brand with Red Accent)
  * ------------------------------------------------------------------------------ */
 .stayvia-navbar {
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background-color: #ffffff !important;
   border-bottom: 1px solid var(--stayvia-border);
   box-shadow: var(--shadow-navbar);
   padding: 0.85rem 0;
@@ -88,10 +216,11 @@ a {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-size: 1.35rem;
-  font-weight: 800;
-  color: var(--stayvia-navy-dark);
-  letter-spacing: -0.03em;
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--stayvia-text-heading) !important;
+  letter-spacing: -0.01em;
 }
 
 .brand-icon-wrapper {
@@ -100,100 +229,152 @@ a {
   justify-content: center;
   width: 36px;
   height: 36px;
-  background: linear-gradient(135deg, var(--stayvia-teal), var(--stayvia-teal-dark));
+  background-color: var(--stayvia-red);
   color: #ffffff;
   border-radius: var(--radius-sm);
   font-size: 1.15rem;
+  transition: var(--transition-smooth);
 }
 
 .stayvia-navbar .nav-link {
   color: var(--stayvia-text-secondary);
   font-weight: 500;
   font-size: 0.95rem;
-  padding: 0.5rem 0.9rem !important;
+  padding: 0.5rem 0.95rem !important;
   border-radius: var(--radius-sm);
   transition: var(--transition-smooth);
 }
 
 .stayvia-navbar .nav-link:hover,
 .stayvia-navbar .nav-link.active {
-  color: var(--stayvia-teal-dark);
-  background-color: var(--stayvia-teal-subtle);
+  color: var(--stayvia-red) !important;
+  background-color: var(--stayvia-red-subtle);
+  font-weight: 600;
 }
 
 /* ------------------------------------------------------------------------------
- * Buttons
+ * Buttons (Red Primary & Clean Neutral Outline Secondary)
  * ------------------------------------------------------------------------------ */
+/* Primary Buttons: Deep Terracotta Red (#BA4328) */
 .btn-stayvia-primary {
-  background-color: var(--stayvia-teal);
+  background-color: var(--stayvia-red);
   color: #ffffff !important;
   font-weight: 600;
   border-radius: var(--radius-md);
-  padding: 0.55rem 1.25rem;
-  border: 1px solid transparent;
+  padding: 0.55rem 1.35rem;
+  border: 1px solid var(--stayvia-red);
+  box-shadow: 0 1px 2px rgba(186, 67, 40, 0.15);
   transition: var(--transition-smooth);
 }
 
-.btn-stayvia-primary:hover {
-  background-color: var(--stayvia-teal-dark);
-  color: #ffffff;
+.btn-stayvia-primary:hover,
+.btn-stayvia-primary:focus {
+  background-color: var(--stayvia-red-dark);
+  border-color: var(--stayvia-red-dark);
+  color: #ffffff !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+  box-shadow: 0 3px 8px rgba(186, 67, 40, 0.2);
 }
 
+.btn-stayvia-primary:active {
+  transform: translateY(0);
+}
+
+/* Secondary Buttons: Clean Neutral Outline */
 .btn-stayvia-outline {
-  background-color: transparent;
-  color: var(--stayvia-navy);
+  background-color: #ffffff;
+  color: var(--stayvia-text-heading);
   font-weight: 600;
   border-radius: var(--radius-md);
-  padding: 0.55rem 1.25rem;
-  border: 1px solid var(--stayvia-border);
+  padding: 0.55rem 1.35rem;
+  border: 1px solid var(--stayvia-border-dark);
   transition: var(--transition-smooth);
 }
 
-.btn-stayvia-outline:hover {
-  background-color: var(--stayvia-surface-muted);
-  border-color: var(--stayvia-border-focus);
-  color: var(--stayvia-navy-dark);
+.btn-stayvia-outline:hover,
+.btn-stayvia-outline:focus {
+  background-color: #fafafa;
+  border-color: var(--stayvia-red);
+  color: var(--stayvia-red);
+  transform: translateY(-1px);
 }
 
 .btn-stayvia-outline-teal {
-  background-color: transparent;
-  color: var(--stayvia-teal-dark);
+  background-color: #ffffff;
+  color: var(--stayvia-text-heading);
   font-weight: 600;
   border-radius: var(--radius-md);
-  padding: 0.55rem 1.25rem;
-  border: 1px solid var(--stayvia-teal);
+  padding: 0.55rem 1.35rem;
+  border: 1px solid var(--stayvia-border-dark);
   transition: var(--transition-smooth);
 }
 
 .btn-stayvia-outline-teal:hover {
-  background-color: var(--stayvia-teal-subtle);
-  color: var(--stayvia-teal-dark);
+  background-color: #fafafa;
+  color: var(--stayvia-red);
+  border-color: var(--stayvia-red);
+}
+
+.btn-outline-primary {
+  color: var(--stayvia-red) !important;
+  border-color: var(--stayvia-red) !important;
+  background-color: transparent !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--stayvia-red-subtle) !important;
+  color: var(--stayvia-red-dark) !important;
+}
+
+.btn-outline-secondary {
+  color: var(--stayvia-text-heading) !important;
+  border-color: var(--stayvia-border-dark) !important;
+  background-color: transparent !important;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #fafafa !important;
+  border-color: var(--stayvia-red) !important;
+  color: var(--stayvia-red) !important;
+}
+
+.btn-danger {
+  background-color: var(--stayvia-red) !important;
+  border-color: var(--stayvia-red) !important;
+}
+
+.btn-danger:hover {
+  background-color: var(--stayvia-red-dark) !important;
+  border-color: var(--stayvia-red-dark) !important;
+}
+
+.btn-check:checked + .btn-outline-secondary,
+.btn-check:checked + .btn-outline-primary {
+  background-color: var(--stayvia-red) !important;
+  border-color: var(--stayvia-red) !important;
+  color: #ffffff !important;
 }
 
 /* ------------------------------------------------------------------------------
- * Hero Section
+ * Hero Section (Pure White Background with Serif Headings & Clean Search Box)
  * ------------------------------------------------------------------------------ */
 .stayvia-hero {
   position: relative;
-  background-color: #0b1523;
-  background-image: 
-    radial-gradient(circle at 15% 25%, rgba(13, 148, 136, 0.15) 0%, transparent 45%),
-    radial-gradient(circle at 85% 75%, rgba(30, 41, 59, 0.3) 0%, transparent 50%);
-  color: #ffffff;
-  padding: 5rem 0 4.5rem 0;
-  border-bottom: 1px solid #1e293b;
+  background-color: #ffffff;
+  background-image: none;
+  color: var(--stayvia-text-main);
+  padding: 4.5rem 0 3.75rem 0;
+  border-bottom: 1px solid var(--stayvia-border);
 }
 
 .hero-pill-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #5eead4;
-  padding: 0.35rem 0.9rem;
+  background-color: var(--stayvia-red-subtle);
+  border: 1px solid var(--stayvia-red-border);
+  color: var(--stayvia-red);
+  padding: 0.35rem 0.95rem;
   border-radius: 999px;
   font-size: 0.825rem;
   font-weight: 600;
@@ -202,19 +383,21 @@ a {
 }
 
 .stayvia-hero h1 {
-  color: #ffffff;
-  font-size: clamp(2.2rem, 4vw, 3.4rem);
-  font-weight: 800;
-  line-height: 1.15;
+  font-family: var(--font-serif);
+  color: var(--stayvia-text-heading);
+  font-size: clamp(2.3rem, 4.2vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
   margin-bottom: 1.25rem;
 }
 
 .stayvia-hero .hero-subtitle {
-  color: #94a3b8;
-  font-size: 1.15rem;
+  color: var(--stayvia-text-secondary);
+  font-size: 1.05rem;
   max-width: 620px;
   margin-bottom: 2.25rem;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 /* Hero Search Component */
@@ -222,59 +405,76 @@ a {
   background-color: #ffffff;
   border-radius: var(--radius-lg);
   padding: 1.5rem;
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-card);
   color: var(--stayvia-text-main);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--stayvia-border);
 }
 
 .hero-search-box .form-label {
   font-size: 0.775rem;
   text-transform: uppercase;
   font-weight: 700;
-  color: var(--stayvia-text-muted);
+  color: var(--stayvia-text-heading);
   letter-spacing: 0.05em;
   margin-bottom: 0.35rem;
 }
 
 .hero-search-box .form-control,
-.hero-search-box .form-select {
-  border: 1px solid var(--stayvia-border);
+.hero-search-box .form-select,
+.form-control,
+.form-select {
+  border: 1px solid var(--stayvia-border-dark);
   border-radius: var(--radius-md);
   font-size: 0.925rem;
   padding: 0.65rem 0.85rem;
-  color: var(--stayvia-navy-dark);
+  color: var(--stayvia-text-main);
+  background-color: #ffffff;
   font-weight: 500;
 }
 
 .hero-search-box .form-control:focus,
-.hero-search-box .form-select:focus {
-  border-color: var(--stayvia-teal);
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+.hero-search-box .form-select:focus,
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--stayvia-red);
+  box-shadow: 0 0 0 3px rgba(186, 67, 40, 0.15);
   outline: none;
+}
+
+.input-group-text {
+  background-color: #ffffff;
+  border: 1px solid var(--stayvia-border-dark);
+  color: var(--stayvia-text-muted);
 }
 
 .search-hint {
   font-size: 0.8rem;
-  color: #cbd5e1;
+  color: var(--stayvia-text-muted);
   margin-top: 0.85rem;
 }
 
+.stayvia-hero .position-absolute.bottom-0 {
+  background-color: rgba(17, 24, 39, 0.92) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
 /* ------------------------------------------------------------------------------
- * Trust & Value Pillars
+ * Trust & Value Pillars (White Cards with Subtle Red Icon Accent)
  * ------------------------------------------------------------------------------ */
 .trust-pillar-card {
-  background-color: var(--stayvia-surface);
+  background-color: #ffffff;
   border: 1px solid var(--stayvia-border);
   border-radius: var(--radius-lg);
   padding: 1.85rem 1.5rem;
   height: 100%;
+  box-shadow: var(--shadow-subtle);
   transition: var(--transition-smooth);
 }
 
 .trust-pillar-card:hover {
-  transform: translateY(-3px);
-  border-color: #cbd5e1;
-  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
+  border-color: var(--stayvia-border-dark);
+  box-shadow: var(--shadow-hover);
 }
 
 .pillar-icon-box {
@@ -283,17 +483,20 @@ a {
   justify-content: center;
   width: 48px;
   height: 48px;
-  background-color: var(--stayvia-teal-subtle);
-  color: var(--stayvia-teal-dark);
+  background-color: var(--stayvia-red-subtle);
+  color: var(--stayvia-red);
   border-radius: var(--radius-md);
   font-size: 1.4rem;
   margin-bottom: 1.2rem;
+  transition: var(--transition-smooth);
 }
 
 .trust-pillar-card h3 {
-  font-size: 1.1rem;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
   margin-bottom: 0.6rem;
   font-weight: 700;
+  color: var(--stayvia-text-heading);
 }
 
 .trust-pillar-card p {
@@ -307,9 +510,10 @@ a {
  * Demonstration Notice Banner
  * ------------------------------------------------------------------------------ */
 .demo-badge-bar {
-  background-color: #eff6ff;
-  border: 1px solid #bfdbfe;
-  color: #1e40af;
+  background-color: #ffffff;
+  border: 1px solid var(--stayvia-border);
+  border-left: 4px solid var(--stayvia-red);
+  color: var(--stayvia-text-heading);
   border-radius: var(--radius-md);
   padding: 0.85rem 1.25rem;
   display: flex;
@@ -317,13 +521,18 @@ a {
   gap: 0.75rem;
   font-size: 0.875rem;
   margin-bottom: 2rem;
+  box-shadow: var(--shadow-subtle);
+}
+
+.demo-badge-bar i {
+  color: var(--stayvia-red);
 }
 
 /* ------------------------------------------------------------------------------
  * Accommodation Cards
  * ------------------------------------------------------------------------------ */
 .accommodation-card {
-  background-color: var(--stayvia-surface);
+  background-color: #ffffff;
   border: 1px solid var(--stayvia-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -335,16 +544,16 @@ a {
 }
 
 .accommodation-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-hover);
-  border-color: #cbd5e1;
+  border-color: var(--stayvia-border-dark);
 }
 
 .card-image-wrap {
   position: relative;
   height: 210px;
   overflow: hidden;
-  background-color: #e2e8f0;
+  background-color: #f3f4f6;
 }
 
 .card-image-wrap img {
@@ -355,36 +564,36 @@ a {
 }
 
 .accommodation-card:hover .card-image-wrap img {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 
 .card-type-badge {
   position: absolute;
   top: 12px;
   left: 12px;
-  background-color: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(4px);
+  background-color: var(--stayvia-red);
   color: #ffffff;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  padding: 0.3rem 0.65rem;
+  padding: 0.35rem 0.7rem;
   border-radius: var(--radius-sm);
   text-transform: uppercase;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 .card-gender-badge {
   position: absolute;
   top: 12px;
   right: 12px;
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(4px);
-  color: var(--stayvia-navy);
+  background-color: #ffffff;
+  color: var(--stayvia-text-heading);
   font-size: 0.75rem;
   font-weight: 600;
   padding: 0.3rem 0.65rem;
   border-radius: var(--radius-sm);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--stayvia-border);
 }
 
 .card-body-content {
@@ -392,6 +601,7 @@ a {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  background-color: #ffffff;
 }
 
 .card-location-meta {
@@ -403,17 +613,22 @@ a {
   margin-bottom: 0.5rem;
 }
 
+.card-location-meta i {
+  color: var(--stayvia-red);
+}
+
 .accommodation-title {
+  font-family: var(--font-serif);
   font-size: 1.15rem;
   font-weight: 700;
-  color: var(--stayvia-navy-dark);
+  color: var(--stayvia-text-heading);
   margin-bottom: 0.35rem;
   line-height: 1.35;
 }
 
 .accommodation-distance {
   font-size: 0.8rem;
-  color: var(--stayvia-teal-dark);
+  color: var(--stayvia-red);
   font-weight: 600;
   margin-bottom: 0.9rem;
 }
@@ -426,13 +641,20 @@ a {
 }
 
 .facility-pill {
-  background-color: var(--stayvia-surface-muted);
+  background-color: #ffffff;
   color: var(--stayvia-text-secondary);
   font-size: 0.725rem;
   font-weight: 500;
-  padding: 0.25rem 0.6rem;
+  padding: 0.25rem 0.65rem;
   border-radius: 999px;
   border: 1px solid var(--stayvia-border);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.facility-pill i {
+  color: var(--stayvia-red);
 }
 
 .card-pricing-footer {
@@ -447,7 +669,7 @@ a {
 .pricing-amount {
   font-size: 1.25rem;
   font-weight: 800;
-  color: var(--stayvia-navy-dark);
+  color: var(--stayvia-text-heading);
 }
 
 .pricing-unit {
@@ -466,18 +688,20 @@ a {
  * ------------------------------------------------------------------------------ */
 .step-card {
   position: relative;
-  background-color: var(--stayvia-surface);
+  background-color: #ffffff;
   border: 1px solid var(--stayvia-border);
   border-radius: var(--radius-lg);
   padding: 2rem 1.5rem;
   text-align: center;
   height: 100%;
+  box-shadow: var(--shadow-subtle);
   transition: var(--transition-smooth);
 }
 
 .step-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--stayvia-border-dark);
 }
 
 .step-number-pill {
@@ -486,18 +710,20 @@ a {
   justify-content: center;
   width: 44px;
   height: 44px;
-  background-color: var(--stayvia-teal);
+  background-color: var(--stayvia-red);
   color: #ffffff;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 1.15rem;
   border-radius: 50%;
   margin-bottom: 1.25rem;
-  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.2);
+  box-shadow: 0 2px 6px rgba(186, 67, 40, 0.2);
 }
 
 .step-card h3 {
-  font-size: 1.1rem;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
   margin-bottom: 0.5rem;
+  color: var(--stayvia-text-heading);
 }
 
 .step-card p {
@@ -510,20 +736,21 @@ a {
  * Mess Services Section
  * ------------------------------------------------------------------------------ */
 .mess-card {
-  background-color: var(--stayvia-surface);
+  background-color: #ffffff;
   border: 1px solid var(--stayvia-border);
   border-radius: var(--radius-lg);
   padding: 1.75rem;
   height: 100%;
   display: flex;
   flex-direction: column;
+  box-shadow: var(--shadow-subtle);
   transition: var(--transition-smooth);
 }
 
 .mess-card:hover {
-  transform: translateY(-3px);
-  border-color: #cbd5e1;
-  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
+  border-color: var(--stayvia-border-dark);
+  box-shadow: var(--shadow-hover);
 }
 
 .mess-diet-badge {
@@ -532,11 +759,11 @@ a {
   gap: 0.35rem;
   font-size: 0.775rem;
   font-weight: 600;
-  padding: 0.25rem 0.6rem;
+  padding: 0.25rem 0.65rem;
   border-radius: var(--radius-sm);
-  background-color: #f0fdf4;
-  color: #166534;
-  border: 1px solid #bbf7d0;
+  background-color: var(--stayvia-red-subtle);
+  color: var(--stayvia-red);
+  border: 1px solid var(--stayvia-red-border);
   margin-bottom: 0.75rem;
 }
 
@@ -556,31 +783,33 @@ a {
 }
 
 .mess-highlights-list li i {
-  color: var(--stayvia-teal);
+  color: var(--stayvia-red);
 }
 
 /* ------------------------------------------------------------------------------
- * Owner Call to Action
+ * Owner Call to Action (Pure White Card with Light Grey Border & Red CTA)
  * ------------------------------------------------------------------------------ */
 .owner-cta-banner {
-  background: linear-gradient(135deg, var(--stayvia-navy-dark) 0%, #172554 100%);
+  background-color: #ffffff;
   border-radius: var(--radius-xl);
   padding: 3.5rem 2.5rem;
-  color: #ffffff;
+  color: var(--stayvia-text-main);
   position: relative;
   overflow: hidden;
-  box-shadow: var(--shadow-hover);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--stayvia-border);
 }
 
 .owner-cta-banner h2 {
-  color: #ffffff;
+  color: var(--stayvia-text-heading) !important;
+  font-family: var(--font-serif);
   font-size: clamp(1.8rem, 3vw, 2.4rem);
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: 1rem;
 }
 
 .owner-cta-banner p {
-  color: #cbd5e1;
+  color: var(--stayvia-text-secondary);
   font-size: 1.05rem;
   max-width: 600px;
   line-height: 1.6;
@@ -590,31 +819,32 @@ a {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  color: #e2e8f0;
+  color: var(--stayvia-text-main);
   font-size: 0.925rem;
   font-weight: 500;
   margin-bottom: 0.6rem;
 }
 
 .owner-benefit-item i {
-  color: #2dd4bf;
+  color: var(--stayvia-red);
 }
 
 /* ------------------------------------------------------------------------------
- * Footer
+ * Footer (Pure White Background with Charcoal Headings & Red Hover Links)
  * ------------------------------------------------------------------------------ */
 .stayvia-footer {
-  background-color: var(--stayvia-navy-dark);
-  color: #94a3b8;
-  padding: 4.5rem 0 2rem 0;
-  border-top: 1px solid #1e293b;
+  background-color: #ffffff;
+  color: var(--stayvia-text-secondary);
+  padding: 4rem 0 2rem 0;
+  border-top: 1px solid var(--stayvia-border);
   font-size: 0.9rem;
 }
 
 .stayvia-footer .footer-brand-title {
-  color: #ffffff;
+  color: var(--stayvia-text-heading);
+  font-family: var(--font-serif);
   font-size: 1.35rem;
-  font-weight: 800;
+  font-weight: 700;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -622,7 +852,8 @@ a {
 }
 
 .stayvia-footer .footer-heading {
-  color: #ffffff;
+  color: var(--stayvia-text-heading);
+  font-family: var(--font-serif);
   font-size: 0.95rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -641,44 +872,106 @@ a {
 }
 
 .stayvia-footer .footer-links a {
-  color: #94a3b8;
+  color: var(--stayvia-text-secondary);
   transition: var(--transition-smooth);
 }
 
 .stayvia-footer .footer-links a:hover {
-  color: #5eead4;
+  color: var(--stayvia-red);
   padding-left: 3px;
 }
 
 .footer-bottom-bar {
-  margin-top: 3.5rem;
-  padding-top: 1.75rem;
-  border-top: 1px solid #1e293b;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--stayvia-border);
   font-size: 0.825rem;
-  color: #64748b;
+  color: var(--stayvia-text-muted);
 }
 
 /* ------------------------------------------------------------------------------
  * Modals & Interactive Alerts
  * ------------------------------------------------------------------------------ */
 .stayvia-modal-content {
+  background-color: #ffffff;
   border-radius: var(--radius-lg);
   border: 1px solid var(--stayvia-border);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.12);
 }
 
 .stayvia-modal-header {
+  background-color: #ffffff !important;
   border-bottom: 1px solid var(--stayvia-border);
   padding: 1.25rem 1.5rem;
 }
 
+.stayvia-modal-header .modal-title {
+  font-family: var(--font-serif);
+  color: var(--stayvia-text-heading);
+  font-weight: 700;
+}
+
 .stayvia-modal-body {
+  background-color: #ffffff;
   padding: 1.5rem;
 }
 
 .filter-badge-active {
-  background-color: var(--stayvia-teal) !important;
+  background-color: var(--stayvia-red) !important;
   color: #ffffff !important;
+  border-color: var(--stayvia-red) !important;
+}
+
+/* ------------------------------------------------------------------------------
+ * Owner Dashboard & Shared Components
+ * ------------------------------------------------------------------------------ */
+.dashboard-stat-card {
+  background-color: #ffffff;
+  border: 1px solid var(--stayvia-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  height: 100%;
+  box-shadow: var(--shadow-subtle);
+  transition: var(--transition-smooth);
+}
+
+.dashboard-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+  border-color: var(--stayvia-border-dark);
+}
+
+.stat-icon-wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  background-color: var(--stayvia-red-subtle);
+  color: var(--stayvia-red);
+}
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.status-available {
+  background-color: var(--stayvia-text-heading);
+}
+
+.status-occupied {
+  background-color: var(--stayvia-red);
+}
+
+.form-check-input:checked {
+  background-color: var(--stayvia-red) !important;
+  border-color: var(--stayvia-red) !important;
 }
 
 /* Mobile responsive adjustments */

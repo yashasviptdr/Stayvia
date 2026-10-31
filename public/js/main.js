@@ -33,11 +33,11 @@ async function checkBackendHealth() {
     const response = await fetch('/api/health');
     if (response.ok) {
       const data = await response.json();
-      badgeEl.className = 'badge bg-success-subtle text-success border border-success-subtle px-2 py-1';
-      badgeEl.innerHTML = `<i class="bi bi-check-circle-fill me-1"></i> Express Server Active (v${data.version || '1.0'})`;
+      badgeEl.className = 'badge bg-white text-dark border px-2 py-1';
+      badgeEl.innerHTML = `<i class="bi bi-check-circle-fill me-1" style="color: var(--stayvia-red);"></i> Express Server Active (v${data.version || '1.0'})`;
     } else {
-      badgeEl.className = 'badge bg-warning-subtle text-warning border border-warning-subtle px-2 py-1';
-      badgeEl.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-1"></i> Backend returned status ${response.status}`;
+      badgeEl.className = 'badge bg-white text-dark border px-2 py-1';
+      badgeEl.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-1 text-danger"></i> Backend returned status ${response.status}`;
     }
   } catch (err) {
     // Expected when running directly as a static file (e.g., file:/// protocol)
@@ -107,14 +107,14 @@ function renderAccommodations(filteredList = null) {
           <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.alt || item.name)}" loading="lazy">
           <span class="card-type-badge">${escapeHtml(item.type)}</span>
           <span class="card-gender-badge"><i class="bi bi-person me-1"></i>${escapeHtml(item.gender)}</span>
-          ${item.status === 'occupied' ? `<span class="badge bg-warning position-absolute top-0 end-0 m-2 shadow-sm text-dark fw-bold"><i class="bi bi-lock-fill me-1"></i>Fully Occupied</span>` : ''}
+          ${item.status === 'occupied' ? `<span class="badge position-absolute top-0 end-0 m-2 shadow-sm text-white fw-bold" style="background-color: var(--stayvia-red);"><i class="bi bi-lock-fill me-1"></i>Fully Occupied</span>` : ''}
         </a>
         
         <div class="card-body-content">
           <div class="card-location-meta">
             <i class="bi bi-geo-alt-fill text-danger"></i>
             <span>${escapeHtml(item.locality)}, Gwalior</span>
-            <span class="badge ${item.isOwnerListing ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-secondary-subtle text-secondary'} ms-auto small" style="font-size: 0.68rem;">
+            <span class="badge ${item.isOwnerListing ? 'text-white' : 'bg-white text-secondary border'} ms-auto small" style="font-size: 0.68rem; ${item.isOwnerListing ? 'background-color: var(--stayvia-red);' : ''}">
               ${item.isOwnerListing ? '<i class="bi bi-person-badge me-1"></i>Owner Listing' : 'Sample Data'}
             </span>
           </div>
@@ -125,7 +125,7 @@ function renderAccommodations(filteredList = null) {
             </a>
           </h3>
           <p class="accommodation-distance mb-2 text-muted small">
-            <i class="bi bi-mortarboard me-1 text-primary"></i> ${escapeHtml(item.localityNote || item.locality)}
+            <i class="bi bi-mortarboard me-1" style="color: var(--stayvia-red);"></i> ${escapeHtml(item.localityNote || item.locality)}
           </p>
           
           <div class="facilities-pills-row">
@@ -451,7 +451,7 @@ function openAccommodationModal(id) {
         <p class="text-secondary small mb-2">
           <i class="bi bi-geo-alt text-danger me-1"></i><strong>${escapeHtml(item.locality)}, Gwalior, MP</strong>
         </p>
-        <p class="text-primary small mb-3">
+        <p class="small mb-3" style="color: var(--stayvia-red);">
           <i class="bi bi-mortarboard me-1"></i>${escapeHtml(item.localityNote)}
         </p>
         
@@ -507,16 +507,16 @@ function checkAuthSession() {
       authArea.innerHTML = `
         <div class="dropdown">
           <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1 py-1 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="userMenuBtn">
-            <i class="bi ${user.role === 'owner' ? 'bi-buildings text-teal' : 'bi-mortarboard-fill text-teal'}" style="color: var(--stayvia-teal);"></i>
+            <i class="bi ${user.role === 'owner' ? 'bi-buildings' : 'bi-mortarboard-fill'}" style="color: var(--stayvia-red);"></i>
             <span class="fw-semibold">${escapeHtml(user.name)}</span>
-            <span class="badge ${user.role === 'owner' ? 'bg-primary' : 'bg-secondary'} ms-1 small" style="font-size: 0.65rem;">${user.role === 'owner' ? 'Owner' : 'Student'}</span>
+            <span class="badge ${user.role === 'owner' ? 'bg-danger' : 'bg-secondary'} ms-1 small" style="font-size: 0.65rem;">${user.role === 'owner' ? 'Owner' : 'Student'}</span>
           </button>
           <ul class="dropdown-menu dropdown-menu-end shadow-sm">
             <li><span class="dropdown-header small">Signed in as <strong>${escapeHtml(user.role === 'owner' ? 'Hostel / PG Owner' : 'Student Scholar')}</strong></span></li>
             <li><span class="dropdown-item-text small text-muted">${escapeHtml(user.email || '')}</span></li>
             <li><hr class="dropdown-divider"></li>
             ${user.role === 'owner' ? `
-              <li><a class="dropdown-item small text-primary fw-bold" href="/owner-dashboard"><i class="bi bi-speedometer2 me-2"></i>Owner Dashboard</a></li>
+              <li><a class="dropdown-item small text-danger fw-bold" href="/owner-dashboard"><i class="bi bi-speedometer2 me-2"></i>Owner Dashboard</a></li>
               <li><hr class="dropdown-divider"></li>
             ` : `
               <li><a class="dropdown-item small" href="/#accommodations"><i class="bi bi-search me-2"></i>Browse Accommodations</a></li>

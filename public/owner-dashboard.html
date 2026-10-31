@@ -6,10 +6,10 @@
   <title>Owner Dashboard – Stayvia | Manage Hostels & PGs near MITS Gwalior</title>
   <meta name="description" content="Manage your student hostel, PG, and flat listings near MITS Gwalior. Track room vacancies, edit facilities, and view student walkthrough inquiries.">
 
-  <!-- Google Fonts: Plus Jakarta Sans -->
+  <!-- Google Fonts: Playfair Display (Serif Headings) & Plus Jakarta Sans (Clean Sans-Serif Body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Bootstrap 5.3 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -61,14 +61,14 @@
       border-radius: 50%;
       margin-right: 5px;
     }
-    .status-available { background-color: #10b981; }
-    .status-occupied { background-color: #f59e0b; }
+    .status-available { background-color: #111827; }
+    .status-occupied { background-color: #ba4328; }
     .live-preview-box {
       border: 1px dashed var(--stayvia-border);
       border-radius: var(--radius-md);
       padding: 0.5rem;
       text-align: center;
-      background-color: #f8fafc;
+      background-color: #ffffff;
     }
     .live-preview-box img {
       max-height: 140px;
@@ -78,7 +78,7 @@
     }
   </style>
 </head>
-<body class="d-flex flex-column min-vh-100 bg-light">
+<body class="d-flex flex-column min-vh-100 bg-white">
 
   <!-- ==============================================================================
        1. NAVIGATION BAR
@@ -106,7 +106,7 @@
             <a class="nav-link" href="/#accommodations">Student Catalog</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active fw-bold text-teal" href="/owner-dashboard" style="color: var(--stayvia-teal);">Owner Dashboard</a>
+            <a class="nav-link active fw-bold text-danger" href="/owner-dashboard" style="color: var(--stayvia-red);">Owner Dashboard</a>
           </li>
         </ul>
 
@@ -152,7 +152,7 @@
   <!-- Prototype Storage Notice -->
   <div class="container mt-3">
     <div class="demo-badge-bar py-2 px-3 mb-3">
-      <i class="bi bi-info-circle-fill text-primary fs-5"></i>
+      <i class="bi bi-info-circle-fill text-danger fs-5"></i>
       <div>
         <strong>Demonstration Mode Storage:</strong> Newly added properties, edits, and availability toggles are safely stored in your browser's <code>localStorage</code>. They persist across page refreshes and appear in the homepage search results!
       </div>
@@ -178,7 +178,7 @@
         <div class="dashboard-stat-card">
           <div class="d-flex align-items-center justify-content-between mb-2">
             <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.725rem;">Total Listings</span>
-            <div class="stat-icon-wrapper bg-primary-subtle text-primary">
+            <div class="stat-icon-wrapper">
               <i class="bi bi-buildings"></i>
             </div>
           </div>
@@ -192,11 +192,11 @@
         <div class="dashboard-stat-card">
           <div class="d-flex align-items-center justify-content-between mb-2">
             <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.725rem;">Vacant / Available</span>
-            <div class="stat-icon-wrapper bg-success-subtle text-success">
+            <div class="stat-icon-wrapper">
               <i class="bi bi-door-open"></i>
             </div>
           </div>
-          <div class="fs-2 fw-bold text-success" id="statAvailableProperties">0</div>
+          <div class="fs-2 fw-bold text-dark" id="statAvailableProperties">0</div>
           <div class="text-secondary small" style="font-size: 0.75rem;">Open for student booking</div>
         </div>
       </div>
@@ -206,11 +206,11 @@
         <div class="dashboard-stat-card">
           <div class="d-flex align-items-center justify-content-between mb-2">
             <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.725rem;">Fully Occupied</span>
-            <div class="stat-icon-wrapper bg-warning-subtle text-warning">
+            <div class="stat-icon-wrapper">
               <i class="bi bi-people-fill"></i>
             </div>
           </div>
-          <div class="fs-2 fw-bold text-warning" id="statOccupiedProperties">0</div>
+          <div class="fs-2 fw-bold text-dark" id="statOccupiedProperties">0</div>
           <div class="text-secondary small" style="font-size: 0.75rem;">Marked as full</div>
         </div>
       </div>
@@ -220,11 +220,11 @@
         <div class="dashboard-stat-card">
           <div class="d-flex align-items-center justify-content-between mb-2">
             <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.725rem;">Student Inquiries</span>
-            <div class="stat-icon-wrapper bg-info-subtle text-info">
+            <div class="stat-icon-wrapper">
               <i class="bi bi-calendar-check"></i>
             </div>
           </div>
-          <div class="fs-2 fw-bold text-info" id="statTotalInquiries">0</div>
+          <div class="fs-2 fw-bold text-dark" id="statTotalInquiries">0</div>
           <div class="text-secondary small" style="font-size: 0.75rem;">Walkthrough requests</div>
         </div>
       </div>
@@ -280,7 +280,7 @@
     <div class="card border shadow-sm rounded-4 bg-white overflow-hidden mb-4">
       <div class="card-header bg-white py-3 px-4 border-bottom d-flex align-items-center justify-content-between">
         <div>
-          <h2 class="h6 fw-bold mb-0"><i class="bi bi-clock-history me-2 text-teal" style="color: var(--stayvia-teal);"></i>Recent Student Walkthrough Inquiries</h2>
+          <h2 class="h6 fw-bold mb-0"><i class="bi bi-clock-history me-2 text-danger"></i>Recent Student Walkthrough Inquiries</h2>
           <small class="text-secondary">Requests submitted by students from the property details page</small>
         </div>
         <span class="badge bg-light text-secondary border" id="inquiriesCountBadge">0 Inquiries</span>
@@ -314,9 +314,9 @@
   <div class="modal fade" id="propertyModal" tabindex="-1" aria-labelledby="propertyModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content stayvia-modal-content">
-        <div class="modal-header stayvia-modal-header bg-light">
+        <div class="modal-header stayvia-modal-header bg-white">
           <h3 class="modal-title h5 fw-bold" id="propertyModalLabel">
-            <i class="bi bi-building-add text-teal me-2" style="color: var(--stayvia-teal);"></i>
+            <i class="bi bi-building-add text-danger me-2"></i>
             <span id="modalActionTitle">Add New Property</span>
           </h3>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -421,49 +421,49 @@
                 <div class="col-6 col-md-4">
                   <div class="form-check">
                     <input class="form-check-input fac-check" type="checkbox" value="High-speed Wi-Fi" id="facWifi" checked>
-                    <label class="form-check-label small" for="facWifi"><i class="bi bi-wifi text-primary me-1"></i>High-speed Wi-Fi</label>
+                    <label class="form-check-label small" for="facWifi"><i class="bi bi-wifi text-danger me-1"></i>High-speed Wi-Fi</label>
                   </div>
                 </div>
                 <div class="col-6 col-md-4">
                   <div class="form-check">
                     <input class="form-check-input fac-check" type="checkbox" value="Homestyle Food (2 Meals)" id="facFood" checked>
-                    <label class="form-check-label small" for="facFood"><i class="bi bi-egg-fried text-warning me-1"></i>Food / Meals</label>
+                    <label class="form-check-label small" for="facFood"><i class="bi bi-egg-fried text-danger me-1"></i>Food / Meals</label>
                   </div>
                 </div>
                 <div class="col-6 col-md-4">
                   <div class="form-check">
                     <input class="form-check-input fac-check" type="checkbox" value="Power Backup" id="facPower" checked>
-                    <label class="form-check-label small" for="facPower"><i class="bi bi-lightning-charge text-warning me-1"></i>Power Backup</label>
+                    <label class="form-check-label small" for="facPower"><i class="bi bi-lightning-charge text-danger me-1"></i>Power Backup</label>
                   </div>
                 </div>
                 <div class="col-6 col-md-4">
                   <div class="form-check">
                     <input class="form-check-input fac-check" type="checkbox" value="Air Cooler / AC Option" id="facAC">
-                    <label class="form-check-label small" for="facAC"><i class="bi bi-snow text-info me-1"></i>Air Cooler / AC</label>
+                    <label class="form-check-label small" for="facAC"><i class="bi bi-snow text-danger me-1"></i>Air Cooler / AC</label>
                   </div>
                 </div>
                 <div class="col-6 col-md-4">
                   <div class="form-check">
                     <input class="form-check-input fac-check" type="checkbox" value="Attached Bathroom" id="facBath" checked>
-                    <label class="form-check-label small" for="facBath"><i class="bi bi-droplet text-primary me-1"></i>Attached Bath</label>
+                    <label class="form-check-label small" for="facBath"><i class="bi bi-droplet text-danger me-1"></i>Attached Bath</label>
                   </div>
                 </div>
                 <div class="col-6 col-md-4">
                   <div class="form-check">
                     <input class="form-check-input fac-check" type="checkbox" value="RO Water" id="facRO" checked>
-                    <label class="form-check-label small" for="facRO"><i class="bi bi-cup-straw text-primary me-1"></i>RO Water</label>
+                    <label class="form-check-label small" for="facRO"><i class="bi bi-cup-straw text-danger me-1"></i>RO Water</label>
                   </div>
                 </div>
                 <div class="col-6 col-md-4">
                   <div class="form-check">
                     <input class="form-check-input fac-check" type="checkbox" value="Study Desk" id="facDesk" checked>
-                    <label class="form-check-label small" for="facDesk"><i class="bi bi-book text-secondary me-1"></i>Study Desk</label>
+                    <label class="form-check-label small" for="facDesk"><i class="bi bi-book text-danger me-1"></i>Study Desk</label>
                   </div>
                 </div>
                 <div class="col-6 col-md-4">
                   <div class="form-check">
                     <input class="form-check-input fac-check" type="checkbox" value="CCTV Security" id="facCCTV" checked>
-                    <label class="form-check-label small" for="facCCTV"><i class="bi bi-shield-check text-success me-1"></i>CCTV Security</label>
+                    <label class="form-check-label small" for="facCCTV"><i class="bi bi-shield-check text-danger me-1"></i>CCTV Security</label>
                   </div>
                 </div>
                 <div class="col-6 col-md-4">
@@ -646,7 +646,7 @@
           <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6 text-center py-5">
               <div class="card p-4 p-md-5 border shadow-sm rounded-4 bg-white">
-                <div class="pillar-icon-box mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.8rem; background-color: #f0fdfa; color: var(--stayvia-teal);">
+                <div class="pillar-icon-box mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.8rem;">
                   <i class="bi bi-shield-lock"></i>
                 </div>
                 <h2 class="h4 fw-bold mb-2">Owner Dashboard Access</h2>
@@ -676,7 +676,7 @@
           <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6 text-center py-5">
               <div class="card p-4 p-md-5 border shadow-sm rounded-4 bg-white">
-                <div class="pillar-icon-box mx-auto mb-3 bg-warning-subtle text-warning" style="width: 64px; height: 64px; font-size: 1.8rem;">
+                <div class="pillar-icon-box mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.8rem;">
                   <i class="bi bi-mortarboard-fill"></i>
                 </div>
                 <h2 class="h4 fw-bold mb-2">Student Account Detected</h2>
@@ -734,9 +734,9 @@
           profileContainer.innerHTML = `
             <div class="dropdown">
               <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1 py-1 px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="ownerProfileBtn">
-                <i class="bi bi-person-circle text-teal" style="color: var(--stayvia-teal);"></i>
+                <i class="bi bi-person-circle" style="color: var(--stayvia-red);"></i>
                 <span id="ownerDisplayName">${escapeHtml(user.name)}</span>
-                <span class="badge bg-primary ms-1 small" style="font-size: 0.65rem;">Owner</span>
+                <span class="badge bg-danger ms-1 small" style="font-size: 0.65rem;">Owner</span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                 <li><span class="dropdown-header small">Signed in as <strong>Hostel / PG Owner</strong></span></li>
@@ -757,8 +757,8 @@
         if (profileContainer) {
           profileContainer.innerHTML = `
             <div class="dropdown">
-              <button class="btn btn-sm btn-outline-warning dropdown-toggle d-flex align-items-center gap-1 py-1 px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="ownerProfileBtn">
-                <i class="bi bi-mortarboard-fill text-warning"></i>
+              <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1 py-1 px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="ownerProfileBtn">
+                <i class="bi bi-mortarboard-fill" style="color: var(--stayvia-red);"></i>
                 <span id="ownerDisplayName">${escapeHtml(user.name)}</span>
                 <span class="badge bg-secondary ms-1 small" style="font-size: 0.65rem;">Student</span>
               </button>
@@ -766,7 +766,7 @@
                 <li><span class="dropdown-header small">Active Account: <strong>Student Scholar</strong></span></li>
                 <li><span class="dropdown-item-text small text-muted">${escapeHtml(user.email || '')}</span></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item small text-primary fw-bold" href="#" data-action="switch-demo-owner" onclick="switchDemoToOwner(); return false;"><i class="bi bi-arrow-repeat me-2"></i>Switch to Demo Owner</a></li>
+                <li><a class="dropdown-item small text-danger fw-bold" href="#" data-action="switch-demo-owner" onclick="switchDemoToOwner(); return false;"><i class="bi bi-arrow-repeat me-2"></i>Switch to Demo Owner</a></li>
                 <li><a class="dropdown-item small" href="/"><i class="bi bi-house me-2"></i>Return to Homepage</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item small text-danger" href="#" data-action="owner-logout" onclick="handleOwnerSignOut(); return false;"><i class="bi bi-box-arrow-right me-2"></i>Sign Out</a></li>
@@ -923,15 +923,15 @@
                   </td>
                   <td>
                     ${item.status === 'occupied' 
-                      ? `<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1"><span class="status-dot status-occupied"></span>Fully Occupied</span>`
-                      : `<span class="badge bg-success-subtle text-success-emphasis border border-success-subtle px-2 py-1"><span class="status-dot status-available"></span>Available</span>`
+                      ? `<span class="badge border px-2 py-1" style="background-color: var(--stayvia-red-subtle); color: var(--stayvia-red); border-color: var(--stayvia-red-border) !important;"><span class="status-dot status-occupied"></span>Fully Occupied</span>`
+                      : `<span class="badge bg-white text-dark border px-2 py-1"><span class="status-dot status-available"></span>Available</span>`
                     }
                   </td>
                   <td class="pe-4 text-end">
                     <div class="btn-group btn-group-sm" role="group">
                       <!-- Availability Toggle -->
                       <button class="btn btn-outline-secondary" title="Toggle Availability" onclick="togglePropertyAvailability(${item.id})">
-                        ${item.status === 'occupied' ? '<i class="bi bi-toggle-off text-muted"></i> Mark Vacant' : '<i class="bi bi-toggle-on text-success"></i> Mark Full'}
+                        ${item.status === 'occupied' ? '<i class="bi bi-toggle-off text-muted"></i> Mark Vacant' : '<i class="bi bi-toggle-on text-danger"></i> Mark Full'}
                       </button>
                       
                       <!-- View Details -->
@@ -940,7 +940,7 @@
                       </a>
 
                       <!-- Edit -->
-                      <button class="btn btn-outline-primary" title="Edit Listing" onclick="openEditPropertyModal(${item.id})">
+                      <button class="btn btn-outline-secondary" title="Edit Listing" onclick="openEditPropertyModal(${item.id})">
                         <i class="bi bi-pencil-square"></i>
                       </button>
 
@@ -981,14 +981,14 @@
 
       tableBody.innerHTML = inquiries.slice(0, 5).map(inq => `
         <tr>
-          <td class="ps-4 font-monospace small fw-bold text-teal" style="color: var(--stayvia-teal);">${escapeHtml(inq.referenceNumber || inq.id || 'STAY-GWL')}</td>
+          <td class="ps-4 font-monospace small fw-bold" style="color: var(--stayvia-red);">${escapeHtml(inq.referenceNumber || inq.id || 'STAY-GWL')}</td>
           <td class="small fw-semibold text-dark">${escapeHtml(inq.studentName)}</td>
           <td class="small text-secondary">${escapeHtml(inq.propertyName || 'Student PG near MITS')}</td>
           <td class="small text-dark">${escapeHtml(inq.preferredDate || 'To be scheduled')}</td>
           <td class="small text-secondary">${escapeHtml(inq.occupancyType || 'Double Sharing')}</td>
           <td class="small text-dark">${escapeHtml(inq.studentPhone || 'N/A')}</td>
           <td class="pe-4 text-end">
-            <span class="badge bg-info-subtle text-info border">Logged</span>
+            <span class="badge bg-white text-dark border">Logged</span>
           </td>
         </tr>
       `).join('');
